@@ -67,6 +67,15 @@ strong{color:var(--paper)}
 .payline.plain{border-left-color:var(--cyan)}
 .payline.plain .tag{color:var(--cyan)}
 
+/* ===== HOVER NOTES ===== */
+.tip{position:relative;border-bottom:2px dotted var(--amber);cursor:help}
+.tip::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 9px);background:#141413;color:#faf9f5;font-family:var(--mono);font-size:11.5px;font-weight:400;line-height:1.55;letter-spacing:0;text-transform:none;padding:10px 13px;border-radius:9px;width:min(300px,72vw);opacity:0;visibility:hidden;transition:opacity .15s;z-index:60;pointer-events:none;white-space:normal;text-align:left}
+.tip::before{content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 3px);border:6px solid transparent;border-top-color:#141413;opacity:0;visibility:hidden;transition:opacity .15s;pointer-events:none;z-index:60}
+.tip:hover::after,.tip:focus::after,.tip:hover::before,.tip:focus::before{opacity:1;visibility:visible}
+.tip:focus{outline:none}
+.tip.tl::after{left:0;transform:none}
+svg [role="note"], svg g:has(>title), svg text:has(>title){cursor:help}
+
 /* ===== CARDS / COMPONENTS ===== */
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 1px 3px rgba(20,20,19,.07)}
 .card h4{font-family:var(--disp);font-weight:700;font-size:17px;margin-bottom:8px}
@@ -163,9 +172,10 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
 <!-- ============ DASHBOARD ============ -->
 <section class="view on" id="v-dash">
   <div class="hero">
-    <div class="eyebrow">SaaS technical SEO / built from the $255K to $320K job spec</div>
+    <div class="eyebrow"><span class="tip tl" tabindex="0" data-tip="SaaS = software sold as a subscription (Slack, Notion, Claude). Technical SEO = the engineering side of search: crawling, indexing, rendering, infrastructure. Not content writing.">SaaS technical SEO</span> / built from the $255K to $320K job spec</div>
     <h2 class="big">Learn the job.<br>Then sell the knowledge.</h2>
     <p class="lede">Eleven modules built from a real senior SEO Lead posting at a top AI company. Every module ends with a quiz. Every diagram is a concept you'll get tested on in the market.</p>
+    <p class="dim" style="font-size:14px">Terms with a <span class="tip" tabindex="0" data-tip="Exactly like this. On a phone, tap the underlined term instead. The diagram notes below need a mouse.">dotted underline</span> reveal a plain-English note on hover, and so do the stage boxes and row labels inside the diagrams.</p>
 
     <figure class="pipe">
       <svg viewBox="0 0 840 150" width="100%" role="img" aria-label="The crawl to index pipeline">
@@ -174,20 +184,27 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
           <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#5d5a52" stroke-width="1.5"/></marker>
         </defs>
         <g font-size="11" text-anchor="middle">
+          <g><title>Google learns the URL exists: from links on other pages, your sitemap file, or earlier crawls. If nothing points at a page, it is invisible from step one.</title>
           <rect x="10" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d97757"/>
-          <text x="65" y="65" fill="#d97757">DISCOVER</text><text x="65" y="80" fill="#5d5a52" font-size="9">links + sitemaps</text>
+          <text x="65" y="65" fill="#d97757">DISCOVER</text><text x="65" y="80" fill="#5d5a52" font-size="9">links + sitemaps</text></g>
+          <g><title>Googlebot fetches the page and records the status code the server answered with. This is where crawl budget, the limited daily attention Google gives your site, gets spent.</title>
           <rect x="155" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
-          <text x="210" y="65" fill="#141413">CRAWL</text><text x="210" y="80" fill="#5d5a52" font-size="9">fetch + status</text>
+          <text x="210" y="65" fill="#141413">CRAWL</text><text x="210" y="80" fill="#5d5a52" font-size="9">fetch + status</text></g>
+          <g><title>Google parses the raw HTML: text, links, tags. Anything that only appears after JavaScript runs is still invisible at this stage.</title>
           <rect x="300" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
-          <text x="355" y="65" fill="#141413">PROCESS</text><text x="355" y="80" fill="#5d5a52" font-size="9">parse HTML</text>
+          <text x="355" y="65" fill="#141413">PROCESS</text><text x="355" y="80" fill="#5d5a52" font-size="9">parse HTML</text></g>
+          <g><title>Pages that need JavaScript wait in line here, sometimes for days. Content stuck in this queue is content indexing late, and for a launch that means lost days.</title>
           <rect x="445" y="10" width="110" height="46" rx="9" fill="#f0eee4" stroke="#6a9bcc" stroke-dasharray="4 3"/>
-          <text x="500" y="30" fill="#6a9bcc">RENDER Q</text><text x="500" y="45" fill="#5d5a52" font-size="9">JS waits here</text>
+          <text x="500" y="30" fill="#6a9bcc">RENDER Q</text><text x="500" y="45" fill="#5d5a52" font-size="9">JS waits here</text></g>
+          <g><title>An invisible (headless) Chrome browser runs the page's JavaScript so Google can finally see the finished version, the way a visitor would.</title>
           <rect x="445" y="80" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
-          <text x="500" y="100" fill="#141413">RENDER</text><text x="500" y="115" fill="#5d5a52" font-size="9">headless Chrome</text>
+          <text x="500" y="100" fill="#141413">RENDER</text><text x="500" y="115" fill="#5d5a52" font-size="9">headless Chrome</text></g>
+          <g><title>Google decides whether the page enters its library at all, and which version counts as the official one when near-duplicates exist.</title>
           <rect x="590" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
-          <text x="645" y="65" fill="#141413">INDEX</text><text x="645" y="80" fill="#5d5a52" font-size="9">in or out</text>
+          <text x="645" y="65" fill="#141413">INDEX</text><text x="645" y="80" fill="#5d5a52" font-size="9">in or out</text></g>
+          <g><title>The page can now appear in results. Ranking happens fresh at every search, weighing relevance, authority, and page experience.</title>
           <rect x="725" y="45" width="105" height="46" rx="9" fill="#ffffff" stroke="#788c5d"/>
-          <text x="777" y="65" fill="#788c5d">SERVE</text><text x="777" y="80" fill="#5d5a52" font-size="9">rank at query</text>
+          <text x="777" y="65" fill="#788c5d">SERVE</text><text x="777" y="80" fill="#5d5a52" font-size="9">rank at query</text></g>
         </g>
         <g stroke="#5d5a52" stroke-width="1.5" fill="none" marker-end="url(#ar)">
           <line x1="120" y1="68" x2="150" y2="68"/><line x1="265" y1="68" x2="295" y2="68"/>
@@ -196,7 +213,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
           <line x1="555" y1="98" x2="585" y2="80"/><line x1="700" y1="68" x2="720" y2="68"/>
         </g>
       </svg>
-      <div class="figcap">FIG 0.1 / The pipeline. Every technical SEO problem lives at one of these stages.</div>
+      <div class="figcap">FIG 0.1 / The pipeline. Every technical SEO problem lives at one of these stages. Hover a stage box for what happens there.</div>
     </figure>
 
     <div class="statgrid">
@@ -220,15 +237,15 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
           <text x="680" y="342" text-anchor="middle">expert</text>
         </g>
         <g font-size="12" fill="#141413" text-anchor="end">
-          <text x="188" y="34">Content + on page</text>
-          <text x="188" y="68">GEO / AEO</text>
-          <text x="188" y="102">Stakeholder ops</text>
-          <text x="188" y="136">Structured data</text>
-          <text x="188" y="170">Docs SEO</text>
-          <text x="188" y="204">Experimentation</text>
-          <text x="188" y="238">CDN / infra</text>
-          <text x="188" y="272">Logs + rendering</text>
-          <text x="188" y="306">ELT / BigQuery</text>
+          <text x="188" y="34">Content + on page<title>Titles, headings, internal links, body copy. The classic SEO you already do.</title></text>
+          <text x="188" y="68">GEO / AEO<title>Generative / Answer Engine Optimization: getting quoted and recommended by ChatGPT, Claude, Perplexity, and Google's AI Overviews. Module 6.</title></text>
+          <text x="188" y="102">Stakeholder ops<title>Getting engineers and executives to prioritize, resource, and actually ship SEO work. Module 10.</title></text>
+          <text x="188" y="136">Structured data<title>JSON-LD: small machine-readable code snippets telling Google exactly what a page is (article, product, FAQ). Module 3.</title></text>
+          <text x="188" y="170">Docs SEO<title>Treating documentation and help centers as an organic acquisition channel. Module 5.</title></text>
+          <text x="188" y="204">Experimentation<title>Controlled tests that prove a change caused a result instead of asserting it. Module 7.</title></text>
+          <text x="188" y="238">CDN / infra<title>The delivery layer under the site: Cloudflare, caching, DNS, HTTP status codes. Module 4.</title></text>
+          <text x="188" y="272">Logs + rendering<title>Reading raw server logs and diagnosing JavaScript rendering: the two most technical skills in the posting. Modules 1 and 2.</title></text>
+          <text x="188" y="306">ELT / BigQuery<title>Piping every SEO data source into one queryable warehouse and asking it questions with SQL. Module 11.</title></text>
         </g>
         <!-- required (amber, thin) then current (cyan) -->
         <g>
@@ -244,7 +261,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
         </g>
       </svg>
       <div class="legend"><span><i style="background:#d97757"></i>Required bar</span><span><i style="background:#6a9bcc"></i>You today (estimate)</span></div>
-      <div class="figcap">FIG 0.2 / Biggest spreads sit at the bottom. The course runs bottom up on purpose.</div>
+      <div class="figcap">FIG 0.2 / Biggest spreads sit at the bottom. The course runs bottom up on purpose. Hover a row label for what it covers.</div>
     </figure>
 
     <div class="payline" style="margin-top:40px"><span class="tag">The standard</span><span>This course holds itself to the bar of the posting it was built from: clean systems, honest measurement, receipts over claims. Finish all twelve modules and the deliverables that come with them, and you will have earned the right to say the same about your own work.</span></div>
@@ -261,7 +278,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <div class="eyebrow">Module 1 / Foundations</div>
   <h2 class="big">Crawl, render, index: the engineering version</h2>
   <p class="lede">Most SEOs know "Google crawls and ranks." The senior version is a pipeline with queues and budgets, where problems at each stage look completely different.</p>
-  <div class="payline"><span class="tag">Why it pays</span><span>SaaS sites run on React, Next.js, and static site generators. The person who knows whether content exists in the initial HTML or only after JavaScript execution is the person who prevents six figure indexing failures.</span></div>
+  <div class="payline"><span class="tag">Why it pays</span><span>SaaS sites run on <span class="tip" tabindex="0" data-tip="The most popular JavaScript framework. By default the visitor's browser assembles the page from scripts, which is exactly what makes it risky for SEO.">React</span>, <span class="tip" tabindex="0" data-tip="A framework built on React that can pre-build pages into finished HTML on the server, fixing most of React's SEO risk when configured right.">Next.js</span>, and <span class="tip" tabindex="0" data-tip="Tools (Hugo, Docusaurus, Next.js in SSG mode) that pre-build every page as a finished HTML file at publish time instead of assembling it per visitor. The safest setup for SEO.">static site generators</span>. The person who knows whether content exists in the initial HTML or only after JavaScript execution is the person who prevents six figure indexing failures.</span></div>
   <div class="payline plain"><span class="tag">Plain English</span><span>Google reads a page twice. First it reads the raw HTML the server sends: think of it as the letter that arrives in the mail. Later, sometimes days later, it runs the page's JavaScript to see the finished version: the letter after someone assembled the furniture inside. WordPress sites (your world) put everything in the letter. Modern SaaS sites often mail an empty box with assembly instructions, and content that only exists after assembly waits in Google's slow lane. The four strategies below are four answers to one question: who assembles the furniture, and when.</span></div>
 
   <h3 class="sec">The four rendering strategies</h3>
@@ -307,7 +324,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <div class="eyebrow">Module 2 / Foundations</div>
   <h2 class="big">Log files: the ground truth</h2>
   <p class="lede">Search Console shows you a summary. Server logs show you every single request Googlebot ever made. Reading them is the most respected skill in the posting.</p>
-  <div class="payline"><span class="tag">Why it pays</span><span>Big SaaS sites have hundreds of thousands of URLs and a finite crawl budget. If 60% of Googlebot's visits burn on junk, new product pages index slowly and rank slowly. Finding the waste is the job.</span></div>
+  <div class="payline"><span class="tag">Why it pays</span><span>Big SaaS sites have hundreds of thousands of URLs and a finite <span class="tip" tabindex="0" data-tip="The limited number of page-fetches Google gives your site per day, set by your site's authority and server health. Junk URLs, redirect chains, and errors burn it.">crawl budget</span>. If 60% of Googlebot's visits burn on junk, new product pages index slowly and rank slowly. Finding the waste is the job.</span></div>
   <div class="payline plain"><span class="tag">Plain English</span><span>Your web server keeps a diary: one line for every visit it has ever received, including every single visit from Google's crawler. Search Console shows you a trimmed summary of that diary; the log file is the full security camera footage. Reading it answers one question: of the limited attention Google gives your site each day (the "crawl budget"), how much lands on pages that matter and how much is wasted on junk? Everything in this module is that one question, asked five ways.</span></div>
 
   <h3 class="sec">Anatomy of a log line</h3>
@@ -372,7 +389,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
 <section class="view" id="v-m3"><div class="wrap">
   <div class="eyebrow">Module 3 / Infrastructure</div>
   <h2 class="big">The implementation layer</h2>
-  <p class="lede">Sitemaps, JSON-LD, canonicals, redirects, robots.txt, migrations. You know the concepts. The senior version is knowing the failure modes cold.</p>
+  <p class="lede">Sitemaps, <span class="tip" tabindex="0" data-tip="A small script block that describes the page to machines: 'this is an article, written by X, published on Y.' Google reads it to award rich results like stars and FAQ dropdowns.">JSON-LD</span>, <span class="tip" tabindex="0" data-tip="The canonical tag names which URL is the official version when several near-duplicates exist. Crucially, it is a suggestion Google can overrule, not a command.">canonicals</span>, redirects, <span class="tip" tabindex="0" data-tip="A plain text file at yoursite.com/robots.txt telling crawlers which paths they may visit. One bad line in it can silently hide your whole site.">robots.txt</span>, migrations. You know the concepts. The senior version is knowing the failure modes cold.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>SaaS companies replatform constantly: marketing site to Next.js, docs to Mintlify. Migrations are the highest stakes event in SEO, and migration expertise is in every senior posting for that reason.</span></div>
   <div class="payline plain"><span class="tag">Plain English</span><span>This is the module closest to what you already do: redirects, canonicals, and sitemaps are publisher SEO bread and butter. The senior difference is knowing the traps by heart. Four of them: robots.txt cannot remove a page from Google's index, a canonical tag is a suggestion Google may overrule, a sitemap full of broken URLs stops being believed, and a migration that redirects everything to the homepage burns the site's accumulated history. Learn those four cold and you interview at senior level on this topic.</span></div>
 
@@ -436,7 +453,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <div class="eyebrow">Module 4 / Infrastructure</div>
   <h2 class="big">HTTP, CDN, DNS, and the Vitals</h2>
   <p class="lede">The layer under the website. Speaking this language correctly is how SEOs earn respect from engineering teams.</p>
-  <div class="payline"><span class="tag">Why it pays</span><span>The classic outage: someone enables aggressive bot protection on Cloudflare, Googlebot gets blocked, rankings crater in days, and nobody in marketing knows why. The SEO Lead is the person who checks firewall events first.</span></div>
+  <div class="payline"><span class="tag">Why it pays</span><span>The classic outage: someone enables aggressive bot protection on <span class="tip" tabindex="0" data-tip="The most popular CDN: a worldwide network that keeps cached copies of your site near visitors and filters incoming traffic. It sits between the whole internet and your server, which is why its settings can silently block Googlebot.">Cloudflare</span>, Googlebot gets blocked, rankings crater in days, and nobody in marketing knows why. The SEO Lead is the person who checks firewall events first.</span></div>
   <div class="payline plain"><span class="tag">Plain English</span><span>The plumbing underneath every website, translated. DNS is the phone book that turns a domain name into a server's address. A CDN like Cloudflare keeps copies of your site around the world so pages load fast, and it employs a bouncer (bot protection) that sometimes throws Googlebot out by mistake: the classic invisible SEO disaster. Status codes are the three digit answers a server gives every request: 200 means fine, 301 means moved permanently, 404 means gone, 500 means broken. Core Web Vitals are Google's three stopwatches measuring how fast and stable a page feels to real visitors.</span></div>
 
   <h3 class="sec">Status codes that actually matter</h3>
