@@ -1038,7 +1038,46 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <p class="dim">Google Search Central documentation first and above all. web.dev for Vitals. Screaming Frog's log analysis guides. Skip most SEO blogs, most courses, and anything selling AI SEO secrets: the gap between you and this job is hands on reps, not more reading.</p>
   <div class="card"><h4>Two prerequisites this course can't replace</h4><p class="dim"><strong>HTML and CSS.</strong> The posting requires enough proficiency to "review code for SEO issues": spot a missing canonical tag, a stray noindex meta, a heading hidden behind JavaScript, a link built as a button. MDN's free HTML and CSS intros plus reading view source on sites you know gets you there in a few weeks of evenings. <strong>Tool reps.</strong> Screaming Frog, Ahrefs, SEMrush, and Search Console are listed as hands on requirements. Screaming Frog is free up to 500 URLs: crawl your own site weekly during the 90 days until its reports feel boring. Ahrefs and SEMrush both have cheap trial tiers; run their site audits on your own properties so you can speak to what each tool is for.</p></div>
 
-  <div class="navrow"><button class="btn ghost" onclick="go('m10')">← Module 10</button><button class="btn" onclick="go('dash')">Back to dashboard</button></div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m10')">← Module 10</button><button class="btn" onclick="go('talk')">Talk Track →</button></div>
+</div></section>
+
+<!-- ============ TALK TRACK ============ -->
+<section class="view" id="v-talk"><div class="wrap">
+  <div class="eyebrow">Execution</div>
+  <h2 class="big">The talk track</h2>
+  <p class="lede">Knowing the material and sounding senior in a conversation are two different skills. This page is the second one: the structures that organize any answer, the insights worth saying out loud, and the drills that make both automatic.</p>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Senior conversations aren't won by knowing more facts. They're won by structure (your answer has a visible order), insight (you say one thing the listener hadn't considered), and calibration (you match the depth to the person). All three are practicable.</span></div>
+
+  <h3 class="sec">The three answer structures</h3>
+  <p>Nearly every question you'll face in an interview or a stakeholder meeting is one of three types. Each has a structure that makes any answer sound organized, because it is.</p>
+  <div class="card"><h4>1. Diagnosis questions → walk the pipeline in order</h4><p class="dim">"Traffic dropped 40%, what do you do?" Answer in pipeline order, out loud: manual actions and algorithm updates first, then infrastructure (robots.txt diffs, bot rules, 5xx in logs), then indexing (GSC coverage), then rendering, then SERP changes. Naming your order before diving in is the senior tell. Jumping straight to "probably content quality" is the junior one.</p></div>
+  <div class="card"><h4>2. Prioritization questions → name data sources before tactics</h4><p class="dim">"80,000 docs pages, where do you start?" Name where the evidence comes from before what you'd do: logs tell me where Google spends, GSC tells me where impressions are, internal search tells me what's missing, then I segment by template and rank by ICE. Data sources first, tactics second, always.</p></div>
+  <div class="card"><h4>3. Recommendation questions → mechanism, measurement, cost</h4><p class="dim">"Should we do X?" Three beats: the mechanism (what physically changes in how Google processes the site), the measurement (what number moves and how you'll isolate it), the cost (what it takes from engineering). "Logs show 30% of Googlebot hits land on redirects; fixing source links reclaims that capacity; it's a two day content-ops task" is a complete senior answer in one breath.</p></div>
+
+  <h3 class="sec">The insight bank</h3>
+  <p>One earned, defensible line per module. These aren't slogans to recite; each one compresses a module you've actually studied, so you can unpack it for ten minutes if challenged. Drop one where it fits and let them pull the thread.</p>
+  <table>
+    <tr><th>Topic</th><th>The line</th></tr>
+    <tr><td>Rendering</td><td>"Whether Google CAN index JavaScript isn't the question. The question is what's in the initial HTML, because rendering is a delayed second pass."</td></tr>
+    <tr><td>Logs</td><td>"Search Console is a survey. Logs are the census."</td></tr>
+    <tr><td>Canonicals</td><td>"A canonical is a hint, not a directive. If your internal links disagree with it, Google picks for you."</td></tr>
+    <tr><td>Infrastructure</td><td>"Sudden cliff drops are almost never content. Check the edge first: bot rules, 5xx spikes, robots.txt regressions."</td></tr>
+    <tr><td>Docs SEO</td><td>"At a SaaS company the docs ARE the site: 80% of the URLs and usually zero percent of the SEO attention. That's the arbitrage."</td></tr>
+    <tr><td>GEO / AEO</td><td>"GEO sits on top of SEO, not instead of it. You can't be cited if you can't be retrieved."</td></tr>
+    <tr><td>Experiments</td><td>"An underpowered test that 'won' is worse than no test. Knowing your sample is too small, and saying so, is the skill."</td></tr>
+    <tr><td>Observability</td><td>"Monitoring doesn't prevent mistakes. It shrinks their blast radius, and time to detection is the whole game."</td></tr>
+    <tr><td>International</td><td>"Most hreflang failures are one rule: the annotations have to point both ways, or Google ignores both."</td></tr>
+    <tr><td>Stakeholders</td><td>"SEO doesn't lose to bad ideas. It loses to unframed ones: no ticket, no mechanism, no number."</td></tr>
+    <tr><td>Data</td><td>"The GSC interface is a viewport, not the data. And the bulk export only collects going forward, so day one is the deadline."</td></tr>
+  </table>
+
+  <h3 class="sec">The drills</h3>
+  <div class="card"><h4>The 60 second test</h4><p class="dim">Explain each module to a smart non-SEO in 60 seconds, out loud. The Plain English boxes at the top of each module are your scripts: read one, close the tab, say it in your own words. When you can do all eleven without notes, the conversational layer is built.</p></div>
+  <div class="card"><h4>The three altitude answer</h4><p class="dim">For every topic, prepare three depths: one sentence (the insight bank line), one minute (the plain English version), and the deep dive (the module itself). Seniors read the listener and pick the altitude. Executives get the sentence, hiring managers get the minute, engineers get the dive.</p></div>
+  <div class="card"><h4>Lead with the number</h4><p class="dim">Open answers with the measurement, then the story: "Thirty percent of crawl was hitting redirects, so..." beats "So first I looked around and noticed...". Practice converting your own war stories into number-first openings. Fifteen years of experience means you have the stories; this drill is just re-cutting them.</p></div>
+  <div class="card"><h4>Record the drill questions</h4><p class="dim">Module 12 Step 4 has the four questions every interview asks. Record yourself answering each one using the structures above, listen back, and cut every sentence that doesn't carry weight. Two rounds of this is worth more than rereading any module.</p></div>
+
+  <div class="navrow"><button class="btn ghost" onclick="go('plan')">← 90 Day Plan</button><button class="btn" onclick="go('dash')">Back to dashboard</button></div>
 </div></section>
 
 </main>
@@ -1059,7 +1098,8 @@ const modules=[
  {id:'m10',label:'Operator layer',num:'10'},
  {id:'elt',label:'ELT + BigQuery',num:'11'},
  {id:'m11',label:'Land the job',num:'12'},
- {id:'plan',label:'90 Day Plan',num:'▶'}
+ {id:'plan',label:'90 Day Plan',num:'▶'},
+ {id:'talk',label:'Talk Track',num:'◇'}
 ];
 const state={completed:new Set(),current:'dash'};
 const nav=document.getElementById('nav');
