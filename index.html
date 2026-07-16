@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Crawl Budget | SaaS Technical SEO Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#faf9f5;
+  --panel:#ffffff;
+  --panel2:#f0eee4;
+  --line:#d6d2c2;
+  --paper:#141413;
+  --muted:#5d5a52;
+  --amber:#d97757;
+  --cyan:#6a9bcc;
+  --green:#788c5d;
+  --red:#bf4a3f;
+  --mono:'IBM Plex Mono',monospace;
+  --disp:'Poppins',Arial,sans-serif;
+  --body:'Lora',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:var(--body);font-size:16.5px;font-weight:500;line-height:1.68}
+::selection{background:var(--amber);color:var(--ink)}
+
+/* ===== SHELL ===== */
+.shell{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+.side{border-right:1px solid var(--line);padding:28px 0;position:sticky;top:0;height:100vh;overflow-y:auto;background:linear-gradient(180deg,#faf9f5 0%,#f4f2ea 100%)}
+.brand{padding:0 24px 22px;border-bottom:1px solid var(--line)}
+.brand .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase}
+.brand h1{font-family:var(--disp);font-weight:800;font-size:26px;line-height:1.05;margin-top:6px}
+.brand h1 span{color:var(--cyan)}
+.progressWrap{padding:16px 24px;border-bottom:1px solid var(--line)}
+.progressWrap .lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:8px}
+.pbar{height:6px;background:var(--panel2);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0%;background:var(--amber);border-radius:3px;transition:width .5s ease}
+nav{padding:14px 12px}
+.navlbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;padding:10px 12px 6px}
+.nbtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;color:var(--muted);font-family:var(--disp);font-size:13.5px;font-weight:500;padding:9px 12px;border-radius:8px;cursor:pointer;transition:.15s}
+.nbtn:hover{color:var(--paper);background:var(--panel)}
+.nbtn.active{color:var(--amber);background:var(--panel2);font-weight:600}
+.nbtn .num{font-family:var(--mono);font-size:10.5px;color:var(--muted);width:20px;flex-shrink:0}
+.nbtn.active .num{color:var(--amber)}
+.nbtn .done{margin-left:auto;color:var(--green);font-size:12px;opacity:0;transition:.2s}
+.nbtn.completed .done{opacity:1}
+
+.main{padding:0;min-width:0}
+.view{display:none;animation:fade .35s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wrap{max-width:880px;margin:0 auto;padding:48px 40px 96px}
+
+/* ===== TYPE ===== */
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+h2.big{font-family:var(--disp);font-weight:800;font-size:clamp(34px,5vw,52px);line-height:1.02;letter-spacing:-.01em;margin-bottom:16px}
+.lede{font-size:18px;color:#3f3c34;max-width:640px;margin-bottom:8px}
+h3.sec{font-family:var(--disp);font-weight:700;font-size:24px;margin:44px 0 12px;padding-left:14px;border-left:4px solid var(--amber)}
+p{margin-bottom:14px}
+p.dim{color:var(--muted)}
+strong{color:var(--paper)}
+.payline{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:16px 18px;margin:26px 0;font-size:15px}
+.payline .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;white-space:nowrap;padding-top:3px}
+.payline.plain{border-left-color:var(--cyan)}
+.payline.plain .tag{color:var(--cyan)}
+
+/* ===== CARDS / COMPONENTS ===== */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 1px 3px rgba(20,20,19,.07)}
+.card h4{font-family:var(--disp);font-weight:700;font-size:17px;margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.term{background:#141413;color:#faf9f5;border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.8;overflow-x:auto;margin:16px 0}
+.term .c{color:#8a877e}
+.term .a{color:#e0906f}
+.term .g{color:#9db07f}
+.term .cy{color:#8fb5d9}
+.term .r{color:#d97666}
+.figcap{font-family:var(--mono);font-size:11.5px;color:#454239;text-align:center;margin:8px 0 26px}
+figure{margin:26px 0 0}
+svg text{font-family:var(--mono)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{font-family:var(--mono);font-size:11.5px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.chip.hot{border-color:var(--amber);color:var(--amber)}
+
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+td.mono{font-family:var(--mono);font-size:12.5px;color:var(--cyan)}
+
+/* ===== QUIZ ===== */
+.quiz{background:var(--panel2);border:1px solid var(--line);border-top:4px solid var(--amber);border-radius:14px;padding:26px;margin-top:48px}
+.quiz .qhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.quiz h4{font-family:var(--disp);font-weight:800;font-size:20px}
+.quiz .score{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.q{margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.q .qt{font-weight:600;margin-bottom:12px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:9px;color:var(--paper);font-family:var(--body);font-size:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:.15s}
+.opt:hover{border-color:var(--muted)}
+.opt.right{border-color:var(--green);background:rgba(120,140,93,.12)}
+.opt.wrong{border-color:var(--red);background:rgba(191,74,63,.08)}
+.opt:disabled{cursor:default}
+.expl{display:none;font-size:13.5px;color:var(--muted);background:var(--ink);border-radius:8px;padding:12px 14px;margin-top:6px}
+.expl.show{display:block}
+.finish{margin-top:22px;text-align:center}
+.finish .msg{font-family:var(--mono);font-size:13px;margin-bottom:12px}
+.btn{display:inline-block;background:var(--amber);color:#faf9f5;border:0;border-radius:9px;font-family:var(--disp);font-weight:600;font-size:14px;padding:12px 22px;cursor:pointer;transition:.15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--paper);border:1px solid var(--line)}
+.navrow{display:flex;justify-content:space-between;margin-top:34px;gap:12px}
+
+/* ===== DASHBOARD ===== */
+.hero{padding:64px 40px 8px;max-width:960px;margin:0 auto}
+.pipe{margin:38px 0 6px}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.stat .v{font-family:var(--disp);font-weight:800;font-size:30px;color:var(--amber)}
+.stat .l{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+.legend{display:flex;gap:18px;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* ===== 90 DAY PLAN ===== */
+.phase{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid var(--line)}
+.phase .d{font-family:var(--mono);font-size:12px;color:var(--amber)}
+.phase h4{font-family:var(--disp);font-weight:700;font-size:18px;margin-bottom:6px}
+.deliv{font-family:var(--mono);font-size:12px;color:var(--green);margin-top:8px}
+
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding-bottom:8px}
+  nav{display:flex;overflow-x:auto;padding:10px 12px;gap:4px}
+  .navlbl{display:none}
+  .nbtn{white-space:nowrap;width:auto}
+  .nbtn .done{display:none}
+  .wrap,.hero{padding-left:22px;padding-right:22px}
+  .grid2,.statgrid{grid-template-columns:1fr}
+  .phase{grid-template-columns:1fr;gap:6px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+</style>
+</head>
+<body style="background:#faf9f5;color:#141413">
+<div class="shell">
+
+<aside class="side">
+  <div class="brand">
+    <div class="k">Interactive course</div>
+    <h1>The Crawl<br>Budget<span>.</span></h1>
+    <div style="font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:10px;letter-spacing:.06em">BUILT TO THE STANDARD OF THE SPEC IT CAME FROM</div>
+  </div>
+  <div class="progressWrap">
+    <div class="lbl"><span>COURSE PROGRESS</span><span id="pct">0%</span></div>
+    <div class="pbar"><i id="pfill"></i></div>
+  </div>
+  <nav id="nav"></nav>
+</aside>
+
+<main class="main">
+
+<!-- ============ DASHBOARD ============ -->
+<section class="view on" id="v-dash">
+  <div class="hero">
+    <div class="eyebrow">SaaS technical SEO / built from the $255K to $320K job spec</div>
+    <h2 class="big">Learn the job.<br>Then sell the knowledge.</h2>
+    <p class="lede">Eleven modules built from a real senior SEO Lead posting at a top AI company. Every module ends with a quiz. Every diagram is a concept you'll get tested on in the market.</p>
+
+    <figure class="pipe">
+      <svg viewBox="0 0 840 150" width="100%" role="img" aria-label="The crawl to index pipeline">
+        <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#5d5a52" stroke-width="1.5"/></marker>
+        </defs>
+        <g font-size="11" text-anchor="middle">
+          <rect x="10" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d97757"/>
+          <text x="65" y="65" fill="#d97757">DISCOVER</text><text x="65" y="80" fill="#5d5a52" font-size="9">links + sitemaps</text>
+          <rect x="155" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
+          <text x="210" y="65" fill="#141413">CRAWL</text><text x="210" y="80" fill="#5d5a52" font-size="9">fetch + status</text>
+          <rect x="300" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
+          <text x="355" y="65" fill="#141413">PROCESS</text><text x="355" y="80" fill="#5d5a52" font-size="9">parse HTML</text>
+          <rect x="445" y="10" width="110" height="46" rx="9" fill="#f0eee4" stroke="#6a9bcc" stroke-dasharray="4 3"/>
+          <text x="500" y="30" fill="#6a9bcc">RENDER Q</text><text x="500" y="45" fill="#5d5a52" font-size="9">JS waits here</text>
+          <rect x="445" y="80" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
+          <text x="500" y="100" fill="#141413">RENDER</text><text x="500" y="115" fill="#5d5a52" font-size="9">headless Chrome</text>
+          <rect x="590" y="45" width="110" height="46" rx="9" fill="#ffffff" stroke="#d6d2c2"/>
+          <text x="645" y="65" fill="#141413">INDEX</text><text x="645" y="80" fill="#5d5a52" font-size="9">in or out</text>
+          <rect x="725" y="45" width="105" height="46" rx="9" fill="#ffffff" stroke="#788c5d"/>
+          <text x="777" y="65" fill="#788c5d">SERVE</text><text x="777" y="80" fill="#5d5a52" font-size="9">rank at query</text>
+        </g>
+        <g stroke="#5d5a52" stroke-width="1.5" fill="none" marker-end="url(#ar)">
+          <line x1="120" y1="68" x2="150" y2="68"/><line x1="265" y1="68" x2="295" y2="68"/>
+          <path d="M410,60 C425,50 430,40 440,34"/><path d="M410,76 C425,86 430,96 440,101"/>
+          <path d="M500,56 L500,75"/>
+          <line x1="555" y1="98" x2="585" y2="80"/><line x1="700" y1="68" x2="720" y2="68"/>
+        </g>
+      </svg>
+      <div class="figcap">FIG 0.1 / The pipeline. Every technical SEO problem lives at one of these stages.</div>
+    </figure>
+
+    <div class="statgrid">
+      <div class="stat"><div class="v">$320K</div><div class="l">top of posted range</div></div>
+      <div class="stat"><div class="v">11</div><div class="l">skill modules</div></div>
+      <div class="stat"><div class="v">90</div><div class="l">day execution plan</div></div>
+    </div>
+
+    <h3 class="sec">Your gap map</h3>
+    <p class="dim">Estimated current depth from 15+ years of publisher and local SEO versus what the posting demands. Amber is the required bar, cyan is you today. The spread is the curriculum.</p>
+    <figure>
+      <svg viewBox="0 0 840 364" width="100%" role="img" aria-label="Skill gap bar chart">
+        <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+        <g font-size="11" fill="#5d5a52">
+          <line x1="200" y1="10" x2="200" y2="324" stroke="#d6d2c2"/>
+          <line x1="360" y1="10" x2="360" y2="324" stroke="#f0eee4" stroke-dasharray="3 4"/>
+          <line x1="520" y1="10" x2="520" y2="324" stroke="#f0eee4" stroke-dasharray="3 4"/>
+          <line x1="680" y1="10" x2="680" y2="324" stroke="#f0eee4" stroke-dasharray="3 4"/>
+          <text x="360" y="342" text-anchor="middle">basic</text>
+          <text x="520" y="342" text-anchor="middle">working</text>
+          <text x="680" y="342" text-anchor="middle">expert</text>
+        </g>
+        <g font-size="12" fill="#141413" text-anchor="end">
+          <text x="188" y="34">Content + on page</text>
+          <text x="188" y="68">GEO / AEO</text>
+          <text x="188" y="102">Stakeholder ops</text>
+          <text x="188" y="136">Structured data</text>
+          <text x="188" y="170">Docs SEO</text>
+          <text x="188" y="204">Experimentation</text>
+          <text x="188" y="238">CDN / infra</text>
+          <text x="188" y="272">Logs + rendering</text>
+          <text x="188" y="306">ELT / BigQuery</text>
+        </g>
+        <!-- required (amber, thin) then current (cyan) -->
+        <g>
+          <rect x="200" y="24" width="480" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="31" width="460" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="58" width="500" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="65" width="330" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="92" width="440" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="99" width="400" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="126" width="460" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="133" width="260" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="160" width="480" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="167" width="130" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="194" width="470" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="201" width="140" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="228" width="480" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="235" width="160" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="262" width="510" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="269" width="110" height="9" rx="4" fill="#6a9bcc"/>
+          <rect x="200" y="296" width="470" height="5" rx="2.5" fill="#d97757" opacity=".55"/><rect x="200" y="303" width="90" height="9" rx="4" fill="#6a9bcc"/>
+        </g>
+      </svg>
+      <div class="legend"><span><i style="background:#d97757"></i>Required bar</span><span><i style="background:#6a9bcc"></i>You today (estimate)</span></div>
+      <div class="figcap">FIG 0.2 / Biggest spreads sit at the bottom. The course runs bottom up on purpose.</div>
+    </figure>
+
+    <div class="payline" style="margin-top:40px"><span class="tag">The standard</span><span>This course holds itself to the bar of the posting it was built from: clean systems, honest measurement, receipts over claims. Finish all twelve modules and the deliverables that come with them, and you will have earned the right to say the same about your own work.</span></div>
+
+    <div class="navrow">
+      <span></span>
+      <button class="btn" onclick="go('m1')">Start Module 1 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODULE 1 ============ -->
+<section class="view" id="v-m1"><div class="wrap">
+  <div class="eyebrow">Module 1 / Foundations</div>
+  <h2 class="big">Crawl, render, index: the engineering version</h2>
+  <p class="lede">Most SEOs know "Google crawls and ranks." The senior version is a pipeline with queues and budgets, where problems at each stage look completely different.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>SaaS sites run on React, Next.js, and static site generators. The person who knows whether content exists in the initial HTML or only after JavaScript execution is the person who prevents six figure indexing failures.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Google reads a page twice. First it reads the raw HTML the server sends: think of it as the letter that arrives in the mail. Later, sometimes days later, it runs the page's JavaScript to see the finished version: the letter after someone assembled the furniture inside. WordPress sites (your world) put everything in the letter. Modern SaaS sites often mail an empty box with assembly instructions, and content that only exists after assembly waits in Google's slow lane. The four strategies below are four answers to one question: who assembles the furniture, and when.</span></div>
+
+  <h3 class="sec">The four rendering strategies</h3>
+  <table>
+    <tr><th>Strategy</th><th>What the server sends</th><th>SEO risk</th></tr>
+    <tr><td class="mono">SSR</td><td>Full HTML built per request</td><td>Low. Google sees everything on fetch</td></tr>
+    <tr><td class="mono">SSG</td><td>HTML prebuilt at deploy time</td><td>Low. What most SaaS docs use</td></tr>
+    <tr><td class="mono">CSR</td><td>Empty shell, browser JS builds the page</td><td>High. Content waits in the render queue</td></tr>
+    <tr><td class="mono">Hydration</td><td>HTML first, JS wakes it up</td><td>Depends: what exists before hydration?</td></tr>
+  </table>
+
+  <h3 class="sec">The three tests, in order</h3>
+  <div class="card"><h4>1. View source, not inspect element</h4><p class="dim">View source shows the raw HTML the server sent. Inspect element shows the DOM after JS ran. If your content is in inspect but not in source, it is JavaScript dependent and at risk.</p></div>
+  <div class="card"><h4>2. Curl as Googlebot</h4>
+    <div class="term"><span class="c"># does the first fetch contain your content?</span><br><span class="g">curl</span> -A <span class="a">"Googlebot"</span> https://example.com/page | <span class="g">grep</span> <span class="a">"target phrase"</span></div>
+    <p class="dim">No match means Google's first pass sees nothing. The page depends on the render queue, which can delay indexing by days.</p></div>
+  <div class="card"><h4>3. URL Inspection in Search Console</h4><p class="dim">Fetch the live URL, read the rendered HTML tab and screenshot. This is what Google's renderer actually produced, including blocked resources.</p></div>
+
+  <div class="quiz" data-mod="m1">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m1">0 / 3</span></div>
+    <div class="q"><div class="qt">A React page shows its pricing table in inspect element but not in view source. What does that mean?</div>
+      <button class="opt" data-ok="0">The page is broken and returns a 404</button>
+      <button class="opt" data-ok="1">The table only exists after JavaScript runs, so indexing depends on the render queue</button>
+      <button class="opt" data-ok="0">Google cannot index the page at all</button>
+      <div class="expl">Google CAN render JS, but rendering is a second, delayed pass. Content missing from source is content at risk, not content that is guaranteed dead.</div></div>
+    <div class="q"><div class="qt">Which setup is the safest for SEO out of the box?</div>
+      <button class="opt" data-ok="0">Client side rendering</button>
+      <button class="opt" data-ok="1">Static site generation</button>
+      <button class="opt" data-ok="0">Rendering only for logged in users</button>
+      <div class="expl">SSG serves complete prebuilt HTML. Nothing waits on JavaScript execution, so nothing waits in the render queue.</div></div>
+    <div class="q"><div class="qt">Why does the render queue matter commercially?</div>
+      <button class="opt" data-ok="0">It changes the page's Core Web Vitals</button>
+      <button class="opt" data-ok="0">It only affects images</button>
+      <button class="opt" data-ok="1">A launch page whose content needs rendering can sit unindexed for days while competitors rank</button>
+      <div class="expl">Rendering is a separate queue with its own delays. For time sensitive launches, JS dependent content means lost days.</div></div>
+    <div class="finish"><div class="msg" id="msg-m1"></div><button class="btn" style="display:none" id="done-m1" onclick="complete('m1','m2')">Mark complete → Module 2</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('dash')">← Dashboard</button><button class="btn ghost" onclick="go('m2')">Skip to Module 2 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 2 ============ -->
+<section class="view" id="v-m2"><div class="wrap">
+  <div class="eyebrow">Module 2 / Foundations</div>
+  <h2 class="big">Log files: the ground truth</h2>
+  <p class="lede">Search Console shows you a summary. Server logs show you every single request Googlebot ever made. Reading them is the most respected skill in the posting.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>Big SaaS sites have hundreds of thousands of URLs and a finite crawl budget. If 60% of Googlebot's visits burn on junk, new product pages index slowly and rank slowly. Finding the waste is the job.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Your web server keeps a diary: one line for every visit it has ever received, including every single visit from Google's crawler. Search Console shows you a trimmed summary of that diary; the log file is the full security camera footage. Reading it answers one question: of the limited attention Google gives your site each day (the "crawl budget"), how much lands on pages that matter and how much is wasted on junk? Everything in this module is that one question, asked five ways.</span></div>
+
+  <h3 class="sec">Anatomy of a log line</h3>
+  <figure>
+    <svg viewBox="0 0 840 210" width="100%" role="img" aria-label="Annotated log line">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <rect x="10" y="80" width="820" height="44" rx="9" fill="#141413" stroke="#d6d2c2"/>
+      <g font-size="12.5">
+        <text x="26" y="107" fill="#6a9bcc">66.249.66.1</text>
+        <text x="122" y="107" fill="#8a877e">[12/Jul/2026:04:22]</text>
+        <text x="278" y="107" fill="#faf9f5">"GET /plugins/livable-bids"</text>
+        <text x="492" y="107" fill="#d97666" font-weight="600">301</text>
+        <text x="534" y="107" fill="#d97757">"Googlebot/2.1"</text>
+      </g>
+      <g font-size="10.5" fill="#5d5a52">
+        <line x1="62" y1="78" x2="62" y2="52" stroke="#6a9bcc"/><text x="62" y="42" text-anchor="middle" fill="#6a9bcc">who (verify the IP)</text>
+        <line x1="190" y1="126" x2="190" y2="152" stroke="#8a877e"/><text x="190" y="166" text-anchor="middle">when</text>
+        <line x1="380" y1="78" x2="380" y2="52" stroke="#5d5a52"/><text x="380" y="42" text-anchor="middle">what was requested</text>
+        <line x1="502" y1="126" x2="502" y2="152" stroke="#bf4a3f"/><text x="502" y="166" text-anchor="middle" fill="#bf4a3f">what happened: a redirect, budget burned</text>
+        <line x1="600" y1="78" x2="600" y2="52" stroke="#d97757"/><text x="600" y="42" text-anchor="middle" fill="#d97757">claims to be Google</text>
+      </g>
+    </svg>
+    <div class="figcap">FIG 2.1 / One line, five facts. Thousands of these lines are your crawl budget story.</div>
+  </figure>
+
+  <h3 class="sec">The five standard questions</h3>
+  <div class="grid2">
+    <div class="card"><h4>Where does Google spend?</h4><p class="dim">Most crawled URLs. Money pages or junk parameters?</p></div>
+    <div class="card"><h4>How much is wasted?</h4><p class="dim">Percent of crawls hitting 3xx, 4xx, 5xx instead of 200.</p></div>
+    <div class="card"><h4>What shouldn't exist?</h4><p class="dim">Parameter URLs, staging leaks, dead paths still being hit.</p></div>
+    <div class="card"><h4>How fast is first crawl?</h4><p class="dim">Days between publish and Googlebot's first visit. Your speed to index.</p></div>
+  </div>
+  <div class="card"><h4>What never gets crawled?</h4><p class="dim">Sections Googlebot ignores are orphaned or deprioritized. Fix with internal links.</p></div>
+
+  <h3 class="sec">The one liner that starts every analysis</h3>
+  <div class="term"><span class="c"># top 50 URL + status combos Googlebot hit</span><br><span class="g">grep</span> <span class="a">"Googlebot"</span> access.log | <span class="g">awk</span> <span class="a">'{print $7, $9}'</span> | <span class="g">sort</span> | <span class="g">uniq</span> -c | <span class="g">sort</span> -rn | <span class="g">head</span> -50</div>
+  <p class="dim">Then verify IPs against Google's published ranges. Anyone can fake the user agent string.</p>
+
+  <div class="quiz" data-mod="m2">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m2">0 / 3</span></div>
+    <div class="q"><div class="qt">Logs show Googlebot hitting a 301 URL 4,000 times a month. The right fix is:</div>
+      <button class="opt" data-ok="0">Add the URL to the sitemap so Google understands it</button>
+      <button class="opt" data-ok="1">Find the internal links and sitemaps still pointing at the old URL and update them to the destination</button>
+      <button class="opt" data-ok="0">Block the URL in robots.txt</button>
+      <div class="expl">The redirect isn't the disease, it's the symptom. Something keeps sending Google there. Fix the source links; blocking it strands the signals.</div></div>
+    <div class="q"><div class="qt">Why verify the IP address on Googlebot log entries?</div>
+      <button class="opt" data-ok="1">Anyone can fake the user agent string, so scrapers show up as Googlebot</button>
+      <button class="opt" data-ok="0">Google requires it in their terms of service</button>
+      <button class="opt" data-ok="0">IPs affect ranking</button>
+      <div class="expl">User agents are self reported. Verified IP ranges (or reverse DNS to googlebot.com) separate real crawl data from scraper noise.</div></div>
+    <div class="q"><div class="qt">What do logs give you that Search Console cannot?</div>
+      <button class="opt" data-ok="0">Keyword rankings</button>
+      <button class="opt" data-ok="1">Every individual request with exact timing and status, not a sampled summary</button>
+      <button class="opt" data-ok="0">Competitor crawl data</button>
+      <div class="expl">GSC samples and aggregates. Logs are the complete record, which is why "log file analysis" appears by name in senior postings.</div></div>
+    <div class="finish"><div class="msg" id="msg-m2"></div><button class="btn" style="display:none" id="done-m2" onclick="complete('m2','m3')">Mark complete → Module 3</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m1')">← Module 1</button><button class="btn ghost" onclick="go('m3')">Module 3 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 3 ============ -->
+<section class="view" id="v-m3"><div class="wrap">
+  <div class="eyebrow">Module 3 / Infrastructure</div>
+  <h2 class="big">The implementation layer</h2>
+  <p class="lede">Sitemaps, JSON-LD, canonicals, redirects, robots.txt, migrations. You know the concepts. The senior version is knowing the failure modes cold.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>SaaS companies replatform constantly: marketing site to Next.js, docs to Mintlify. Migrations are the highest stakes event in SEO, and migration expertise is in every senior posting for that reason.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>This is the module closest to what you already do: redirects, canonicals, and sitemaps are publisher SEO bread and butter. The senior difference is knowing the traps by heart. Four of them: robots.txt cannot remove a page from Google's index, a canonical tag is a suggestion Google may overrule, a sitemap full of broken URLs stops being believed, and a migration that redirects everything to the homepage burns the site's accumulated history. Learn those four cold and you interview at senior level on this topic.</span></div>
+
+  <h3 class="sec">Redirect chains burn budget and dilute signals</h3>
+  <figure>
+    <svg viewBox="0 0 840 190" width="100%" role="img" aria-label="Redirect chain versus direct redirect">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <defs><marker id="ar3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#5d5a52" stroke-width="1.5"/></marker></defs>
+      <g font-size="11" text-anchor="middle">
+        <text x="70" y="30" fill="#bf4a3f" font-weight="600">WRONG: THE CHAIN</text>
+        <rect x="20" y="42" width="90" height="36" rx="8" fill="#ffffff" stroke="#d6d2c2"/><text x="65" y="64" fill="#141413">/old</text>
+        <rect x="180" y="42" width="90" height="36" rx="8" fill="#ffffff" stroke="#d6d2c2"/><text x="225" y="64" fill="#141413">/newer</text>
+        <rect x="340" y="42" width="110" height="36" rx="8" fill="#ffffff" stroke="#788c5d"/><text x="395" y="64" fill="#788c5d">/current</text>
+        <text x="145" y="56" fill="#bf4a3f" font-size="10">301</text><text x="305" y="56" fill="#bf4a3f" font-size="10">301</text>
+        <text x="70" y="130" fill="#788c5d" font-weight="600">RIGHT: DIRECT</text>
+        <rect x="20" y="142" width="90" height="36" rx="8" fill="#ffffff" stroke="#d6d2c2"/><text x="65" y="164" fill="#141413">/old</text>
+        <rect x="340" y="142" width="110" height="36" rx="8" fill="#ffffff" stroke="#788c5d"/><text x="395" y="164" fill="#788c5d">/current</text>
+        <text x="225" y="152" fill="#788c5d" font-size="10">one 301, straight through</text>
+      </g>
+      <g stroke-width="1.5" fill="none" marker-end="url(#ar3)">
+        <line x1="110" y1="60" x2="175" y2="60" stroke="#bf4a3f"/><line x1="270" y1="60" x2="335" y2="60" stroke="#bf4a3f"/>
+        <line x1="110" y1="160" x2="335" y2="160" stroke="#788c5d"/>
+      </g>
+      <text x="540" y="60" font-size="11" fill="#5d5a52">Each hop = another fetch,</text>
+      <text x="540" y="76" font-size="11" fill="#5d5a52">another delay, weaker signals.</text>
+      <text x="540" y="160" font-size="11" fill="#5d5a52">Point A directly at C. Always.</text>
+    </svg>
+    <div class="figcap">FIG 3.1 / When you find a chain, collapse it at the source.</div>
+  </figure>
+
+  <h3 class="sec">Failure modes seniors get tested on</h3>
+  <div class="card"><h4>The robots.txt trap</h4><p class="dim">Blocking a URL in robots.txt does NOT deindex it. It prevents Google from crawling, which means Google never sees the noindex tag, so the URL can stay indexed as a bare link. To deindex: allow crawl, serve noindex, wait, then optionally block.</p></div>
+  <div class="card"><h4>Contradictory canonicals</h4><p class="dim">Canonical pointing at a redirect, or at a noindexed page, sends mixed signals and Google picks for you. Canonical is a hint, not a directive: your internal links and sitemaps must agree with it or it gets ignored.</p></div>
+  <div class="card"><h4>Sitemap trust decay</h4><p class="dim">Sitemaps full of redirects, 404s, and noindexed URLs teach Google your sitemap lies, and it starts ignoring it. Only canonical, indexable, 200 status URLs go in. Fake lastmod dates get ignored too.</p></div>
+  <div class="card"><h4>The homepage dump migration</h4><p class="dim">Mass redirecting old URLs to the homepage gets treated as a soft 404 and the equity evaporates. Migrations need a one to one redirect map, kept under version control, executed with canonicals, sitemaps, and internal links updated in the same deploy.</p></div>
+
+  <div class="quiz" data-mod="m3">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m3">0 / 3</span></div>
+    <div class="q"><div class="qt">You need a page OUT of the index. First move:</div>
+      <button class="opt" data-ok="0">Block it in robots.txt immediately</button>
+      <button class="opt" data-ok="1">Let it stay crawlable and serve a noindex tag, then block later if needed</button>
+      <button class="opt" data-ok="0">Delete it from the sitemap only</button>
+      <div class="expl">Google has to crawl the page to see the noindex. Block first and the noindex is invisible, so the URL lingers in the index.</div></div>
+    <div class="q"><div class="qt">A canonical tag points to a URL that 301s somewhere else. Result?</div>
+      <button class="opt" data-ok="1">Confused signals. Google may ignore your canonical and choose its own</button>
+      <button class="opt" data-ok="0">Google follows both and indexes twice</button>
+      <button class="opt" data-ok="0">Nothing, canonicals are absolute directives</button>
+      <div class="expl">Canonical is a hint. Point it at anything other than a live 200 canonical URL and you invite Google to override you.</div></div>
+    <div class="q"><div class="qt">During a domain migration, redirecting every old URL to the new homepage causes:</div>
+      <button class="opt" data-ok="0">Full equity transfer, this is the standard method</button>
+      <button class="opt" data-ok="0">A manual penalty</button>
+      <button class="opt" data-ok="1">Soft 404 treatment and evaporated equity, because there's no one to one mapping</button>
+      <div class="expl">Google treats irrelevant mass redirects like soft 404s. Old page signals only transfer to genuinely equivalent destinations.</div></div>
+    <div class="finish"><div class="msg" id="msg-m3"></div><button class="btn" style="display:none" id="done-m3" onclick="complete('m3','m4')">Mark complete → Module 4</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m2')">← Module 2</button><button class="btn ghost" onclick="go('m4')">Module 4 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 4 ============ -->
+<section class="view" id="v-m4"><div class="wrap">
+  <div class="eyebrow">Module 4 / Infrastructure</div>
+  <h2 class="big">HTTP, CDN, DNS, and the Vitals</h2>
+  <p class="lede">The layer under the website. Speaking this language correctly is how SEOs earn respect from engineering teams.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>The classic outage: someone enables aggressive bot protection on Cloudflare, Googlebot gets blocked, rankings crater in days, and nobody in marketing knows why. The SEO Lead is the person who checks firewall events first.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>The plumbing underneath every website, translated. DNS is the phone book that turns a domain name into a server's address. A CDN like Cloudflare keeps copies of your site around the world so pages load fast, and it employs a bouncer (bot protection) that sometimes throws Googlebot out by mistake: the classic invisible SEO disaster. Status codes are the three digit answers a server gives every request: 200 means fine, 301 means moved permanently, 404 means gone, 500 means broken. Core Web Vitals are Google's three stopwatches measuring how fast and stable a page feels to real visitors.</span></div>
+
+  <h3 class="sec">Status codes that actually matter</h3>
+  <table>
+    <tr><th>Code</th><th>Meaning</th><th>The senior detail</th></tr>
+    <tr><td class="mono">301 / 308</td><td>Permanent redirect</td><td>Passes signals. 308 preserves the request method</td></tr>
+    <tr><td class="mono">302 / 307</td><td>Temporary redirect</td><td>Google may keep the OLD URL indexed</td></tr>
+    <tr><td class="mono">304</td><td>Not modified</td><td>Good. Caching works, crawl budget saved</td></tr>
+    <tr><td class="mono">410</td><td>Gone</td><td>Deindexes slightly faster than 404 when killing content on purpose</td></tr>
+    <tr><td class="mono">429</td><td>Too many requests</td><td>Tells Googlebot to back off. Kills crawl rate</td></tr>
+    <tr><td class="mono">503</td><td>Service unavailable</td><td>With Retry After header = the correct planned maintenance signal</td></tr>
+    <tr><td class="mono">200 on errors</td><td>Soft 404</td><td>Page says "not found" but returns 200. Common on JS sites, pollutes the index</td></tr>
+  </table>
+
+  <h3 class="sec">Core Web Vitals: the current three</h3>
+  <figure>
+    <svg viewBox="0 0 840 200" width="100%" role="img" aria-label="Core Web Vitals thresholds">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <g font-size="12" text-anchor="middle">
+        <g>
+          <circle cx="150" cy="86" r="56" fill="none" stroke="#d6d2c2" stroke-width="10"/>
+          <circle cx="150" cy="86" r="56" fill="none" stroke="#788c5d" stroke-width="10" stroke-dasharray="246 352" stroke-linecap="round" transform="rotate(-90 150 86)"/>
+          <text x="150" y="82" fill="#141413" font-size="17" font-weight="600">LCP</text><text x="150" y="100" fill="#788c5d" font-size="11">&lt; 2.5s</text>
+          <text x="150" y="170" fill="#5d5a52" font-size="10.5">main content visible</text>
+        </g>
+        <g>
+          <circle cx="420" cy="86" r="56" fill="none" stroke="#d6d2c2" stroke-width="10"/>
+          <circle cx="420" cy="86" r="56" fill="none" stroke="#6a9bcc" stroke-width="10" stroke-dasharray="281 352" stroke-linecap="round" transform="rotate(-90 420 86)"/>
+          <text x="420" y="82" fill="#141413" font-size="17" font-weight="600">CLS</text><text x="420" y="100" fill="#6a9bcc" font-size="11">&lt; 0.1</text>
+          <text x="420" y="170" fill="#5d5a52" font-size="10.5">visual stability</text>
+        </g>
+        <g>
+          <circle cx="690" cy="86" r="56" fill="none" stroke="#d6d2c2" stroke-width="10"/>
+          <circle cx="690" cy="86" r="56" fill="none" stroke="#d97757" stroke-width="10" stroke-dasharray="211 352" stroke-linecap="round" transform="rotate(-90 690 86)"/>
+          <text x="690" y="82" fill="#141413" font-size="17" font-weight="600">INP</text><text x="690" y="100" fill="#d97757" font-size="11">&lt; 200ms</text>
+          <text x="690" y="170" fill="#5d5a52" font-size="10.5">responsiveness (replaced FID)</text>
+        </g>
+      </g>
+    </svg>
+    <div class="figcap">FIG 4.1 / The thresholds. Field data (CrUX, real users) is what ranks you. Lab data (Lighthouse) is for debugging only.</div>
+  </figure>
+
+  <div class="card"><h4>The usual fixes</h4><p class="dim"><strong>LCP:</strong> optimize the hero image and server response time. <strong>CLS:</strong> reserve space for images, ads, and fonts before they load. <strong>INP:</strong> break up long JavaScript tasks. Diagnose with lab, verify with field.</p></div>
+  <div class="card"><h4>Cloudflare features an SEO Lead owns</h4><p class="dim">Cache rules (freshness versus speed), edge redirect rules (faster than server redirects), Workers (inject tags, prerender, programmatic redirects), and bot management (the number one silent Googlebot killer).</p></div>
+
+  <div class="quiz" data-mod="m4">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m4">0 / 3</span></div>
+    <div class="q"><div class="qt">Rankings dropped sharply this week with no algorithm update and no site changes from marketing. First place to look:</div>
+      <button class="opt" data-ok="0">Rewrite title tags</button>
+      <button class="opt" data-ok="1">CDN and firewall events: is something challenging or blocking Googlebot?</button>
+      <button class="opt" data-ok="0">Buy backlinks to recover</button>
+      <div class="expl">Sudden cliff drops without content changes are usually infrastructure: bot rules, 5xx spikes, a robots.txt regression. Check what changed at the edge.</div></div>
+    <div class="q"><div class="qt">Which data determines your actual Core Web Vitals ranking signal?</div>
+      <button class="opt" data-ok="0">Lighthouse lab scores</button>
+      <button class="opt" data-ok="1">CrUX field data from real Chrome users</button>
+      <button class="opt" data-ok="0">Your own stopwatch on office wifi</button>
+      <div class="expl">Google uses field data. Lab data is a simulation for debugging. A perfect Lighthouse score with bad field data still hurts you.</div></div>
+    <div class="q"><div class="qt">A "page not found" screen that returns HTTP 200 is:</div>
+      <button class="opt" data-ok="1">A soft 404, common on JS sites, and it pollutes the index</button>
+      <button class="opt" data-ok="0">Fine, users see the right message</button>
+      <button class="opt" data-ok="0">A security vulnerability</button>
+      <div class="expl">The status code is the machine signal. 200 says "real page here," so Google may index thousands of error screens as content.</div></div>
+    <div class="finish"><div class="msg" id="msg-m4"></div><button class="btn" style="display:none" id="done-m4" onclick="complete('m4','m5')">Mark complete → Module 5</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m3')">← Module 3</button><button class="btn ghost" onclick="go('m5')">Module 5 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 5 ============ -->
+<section class="view" id="v-m5"><div class="wrap">
+  <div class="eyebrow">Module 5 / The frontier</div>
+  <h2 class="big">Documentation SEO: the empty lane</h2>
+  <p class="lede">Treating docs, help centers, and API references as an organic acquisition channel. Almost nobody sells this. It's the least crowded specialty in the entire posting.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>Developers don't search "best project management API." They search "how to verify webhook signature" and land on docs. Docs pages outnumber marketing pages massively, earn organic links from Stack Overflow and GitHub, and convert because the searcher is already implementing.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>SaaS companies run two websites in one: a small marketing site everyone fights over, and a huge instruction manual (the documentation) that nobody optimizes. It's like a local business polishing its homepage while three hundred service pages sit ignored, except here the ignored pages are 80% of the site and the people reading them are minutes away from becoming customers. Treating the manual as a search channel is the least crowded specialty in the entire posting.</span></div>
+
+  <figure>
+    <svg viewBox="0 0 840 230" width="100%" role="img" aria-label="Docs versus marketing page share at a typical SaaS company">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <g font-size="11" fill="#5d5a52">
+        <text x="20" y="40">Typical SaaS site: share of total indexable URLs</text>
+      </g>
+      <g font-size="12">
+        <rect x="20" y="60" width="640" height="34" rx="7" fill="#6a9bcc"/><text x="30" y="82" fill="#faf9f5" font-weight="600">Docs + help + API reference ~ 80%</text>
+        <rect x="20" y="106" width="110" height="34" rx="7" fill="#d97757"/><text x="140" y="128" fill="#141413">Marketing ~ 14%</text>
+        <rect x="20" y="152" width="48" height="34" rx="7" fill="#d6d2c2"/><text x="80" y="174" fill="#5d5a52">Blog + rest ~ 6%</text>
+      </g>
+      <text x="20" y="216" font-size="11" fill="#5d5a52">Most companies optimize the 14% and ignore the 80%. That's the arbitrage.</text>
+    </svg>
+    <div class="figcap">FIG 5.1 / Where the pages are versus where the SEO attention goes.</div>
+  </figure>
+
+  <h3 class="sec">The actual work</h3>
+  <div class="card"><h4>Architecture that mirrors search</h4><p class="dim">URLs like /docs/webhooks/verify, not /docs/article-4432. One page per task or question, because that matches query granularity AND chunks cleanly for LLM retrieval.</p></div>
+  <div class="card"><h4>Version control for versioned docs</h4><p class="dim">Old versions canonical to current or get noindexed. Otherwise every release multiplies your duplicate content.</p></div>
+  <div class="card"><h4>Internal search is a roadmap</h4><p class="dim">What people search inside your docs is a ranked list of content you're missing. Free query data most teams never read.</p></div>
+  <div class="card"><h4>Docs link to money pages</h4><p class="dim">Docs accumulate authority from organic links. Most companies never route that authority to commercial pages. Internal linking between docs and marketing is a lever nobody pulls.</p></div>
+  <div class="chips"><span class="chip hot">Mintlify</span><span class="chip">Docusaurus</span><span class="chip">GitBook</span><span class="chip">ReadMe</span></div>
+  <p class="dim">Learn one deeply. They're all markdown in, static site out. Mintlify is the current hot one at AI companies and free to spin up. Best practice project in this course: document your own Livable suite on it. Real platform reps, real product docs, and a portfolio piece in one move.</p>
+
+  <div class="quiz" data-mod="m5">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m5">0 / 3</span></div>
+    <div class="q"><div class="qt">Why does one page per question beat one giant mega page in docs?</div>
+      <button class="opt" data-ok="1">It matches query granularity for search AND chunks cleanly for LLM retrieval</button>
+      <button class="opt" data-ok="0">Google penalizes long pages</button>
+      <button class="opt" data-ok="0">It increases ad inventory</button>
+      <div class="expl">Searchers ask specific questions and retrieval systems pull passages. Granular pages win both games at once.</div></div>
+    <div class="q"><div class="qt">A SaaS product ships v4 but keeps v1 through v3 docs live with no canonicals. The risk:</div>
+      <button class="opt" data-ok="0">None, more pages means more traffic</button>
+      <button class="opt" data-ok="1">Massive duplication where old versions compete with and dilute current docs</button>
+      <button class="opt" data-ok="0">A manual action for cloaking</button>
+      <div class="expl">Four near identical versions of every page split signals four ways. Canonical old versions to current, or noindex them.</div></div>
+    <div class="q"><div class="qt">The most underused authority move at SaaS companies:</div>
+      <button class="opt" data-ok="0">Buying links to the pricing page</button>
+      <button class="opt" data-ok="0">Putting keywords in the footer</button>
+      <button class="opt" data-ok="1">Internal links from high authority docs pages to commercial pages</button>
+      <div class="expl">Docs earn real organic links constantly. Routing that authority internally is free and almost universally neglected.</div></div>
+    <div class="finish"><div class="msg" id="msg-m5"></div><button class="btn" style="display:none" id="done-m5" onclick="complete('m5','m6')">Mark complete → Module 6</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m4')">← Module 4</button><button class="btn ghost" onclick="go('m6')">Module 6 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 6 ============ -->
+<section class="view" id="v-m6"><div class="wrap">
+  <div class="eyebrow">Module 6 / The frontier</div>
+  <h2 class="big">GEO and AEO: getting cited by machines</h2>
+  <p class="lede">Getting quoted and recommended by AI Overviews, ChatGPT, Claude, and Perplexity. Your playbook work gives you a head start. This is the technical layer under it.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>The posting lists AEO and GEO by name. When a company writes those acronyms into a $300K job spec, the market has priced the skill. Most SEOs still can't define it. That window is maybe 18 months wide.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>When ChatGPT, Claude, Perplexity, or Google's AI Overviews answer a question, they pick a few paragraphs from across the web to quote. AEO and GEO are two names for the same craft: being the paragraph that gets picked. Two rules drive everything. First, you must be findable in normal search, because the AI shops from the same shelves. Second, every section of your page must work as a standalone quote: heading phrased like the question, answer in the first sentence.</span></div>
+
+  <h3 class="sec">How retrieval actually works</h3>
+  <figure>
+    <svg viewBox="0 0 840 170" width="100%" role="img" aria-label="LLM retrieval flow">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <defs><marker id="ar6" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#5d5a52" stroke-width="1.5"/></marker></defs>
+      <g font-size="11" text-anchor="middle">
+        <rect x="15" y="58" width="120" height="50" rx="9" fill="#ffffff" stroke="#d6d2c2"/><text x="75" y="80" fill="#141413">USER ASKS</text><text x="75" y="96" fill="#5d5a52" font-size="9">"best estimate plugin"</text>
+        <rect x="185" y="58" width="130" height="50" rx="9" fill="#ffffff" stroke="#d97757"/><text x="250" y="80" fill="#d97757">AI SEARCHES</text><text x="250" y="96" fill="#5d5a52" font-size="9">rides search indexes</text>
+        <rect x="365" y="58" width="140" height="50" rx="9" fill="#ffffff" stroke="#6a9bcc"/><text x="435" y="80" fill="#6a9bcc">READS PASSAGES</text><text x="435" y="96" fill="#5d5a52" font-size="9">chunks, not pages</text>
+        <rect x="555" y="58" width="130" height="50" rx="9" fill="#ffffff" stroke="#d6d2c2"/><text x="620" y="80" fill="#141413">SYNTHESIZES</text><text x="620" y="96" fill="#5d5a52" font-size="9">picks what to quote</text>
+        <rect x="730" y="58" width="98" height="50" rx="9" fill="#ffffff" stroke="#788c5d"/><text x="779" y="80" fill="#788c5d">CITES YOU</text><text x="779" y="96" fill="#5d5a52" font-size="9">or your rival</text>
+      </g>
+      <g stroke="#5d5a52" stroke-width="1.5" fill="none" marker-end="url(#ar6)">
+        <line x1="135" y1="83" x2="180" y2="83"/><line x1="315" y1="83" x2="360" y2="83"/><line x1="505" y1="83" x2="550" y2="83"/><line x1="685" y1="83" x2="725" y2="83"/>
+      </g>
+      <text x="250" y="140" font-size="10.5" fill="#d97757" text-anchor="middle">← classic SEO visibility is the entry ticket</text>
+      <text x="435" y="140" font-size="10.5" fill="#6a9bcc" text-anchor="middle">← chunk structure decides here</text>
+    </svg>
+    <div class="figcap">FIG 6.1 / You can't be cited if you can't be retrieved. GEO sits on top of SEO, not instead of it.</div>
+  </figure>
+
+  <h3 class="sec">The technical tactics</h3>
+  <div class="card"><h4>Chunk level optimization</h4><p class="dim">Retrieval pulls passages. Every section must stand alone: a heading phrased like the question, the direct answer in the first sentence, detail after. Answer first structure is measurably what gets quoted.</p></div>
+  <div class="card"><h4>Entity consistency</h4><p class="dim">Identical names and descriptions across your site, LinkedIn, Crunchbase, G2, GitHub, and directories. A product called Estimates on the page and Bids in the URL fragments the entity. You've seen this exact bug on your own site.</p></div>
+  <div class="card"><h4>Crawler access audit</h4><p class="dim">Check robots.txt and Cloudflare rules for GPTBot, ClaudeBot, PerplexityBot, and Google Extended. Many sites blocked them in the 2023 panic and forgot. Blocked crawler = zero citations from that engine, forever.</p></div>
+  <div class="card"><h4>Measure it</h4><p class="dim">Run your money queries through the engines monthly and log every citation. Watch referral traffic from chat.openai.com and perplexity.ai. Track branded search volume as the awareness proxy.</p></div>
+
+  <div class="quiz" data-mod="m6">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m6">0 / 3</span></div>
+    <div class="q"><div class="qt">Why does classic SEO still matter for AI citations?</div>
+      <button class="opt" data-ok="1">Retrieval mode rides traditional search indexes, so unretrievable pages can't be cited</button>
+      <button class="opt" data-ok="0">It doesn't, GEO replaces SEO entirely</button>
+      <button class="opt" data-ok="0">AI engines only cite paid placements</button>
+      <div class="expl">AI Overviews, Perplexity, and ChatGPT search all pull candidates from search style indexes. Visibility there is the entry ticket.</div></div>
+    <div class="q"><div class="qt">Two pages cover the same topic. Page A answers in the first sentence under a question shaped heading. Page B builds up to the answer in paragraph five. Retrieval systems favor:</div>
+      <button class="opt" data-ok="0">Page B, depth signals expertise</button>
+      <button class="opt" data-ok="1">Page A, because retrieval pulls standalone passages and quotes direct answers</button>
+      <button class="opt" data-ok="0">Neither, only domain authority matters</button>
+      <div class="expl">Passage level retrieval rewards chunks that answer immediately. Buried answers lose even with more authority behind them.</div></div>
+    <div class="q"><div class="qt">A site blocked GPTBot in 2023 and never revisited it. The consequence today:</div>
+      <button class="opt" data-ok="1">Zero presence in that engine's retrieval, invisible to its users</button>
+      <button class="opt" data-ok="0">Better rankings from saved crawl budget</button>
+      <button class="opt" data-ok="0">Nothing, GPTBot ignores robots.txt</button>
+      <div class="expl">The crawler audit is step one of any GEO engagement precisely because these forgotten blocks are everywhere.</div></div>
+    <div class="finish"><div class="msg" id="msg-m6"></div><button class="btn" style="display:none" id="done-m6" onclick="complete('m6','m7')">Mark complete → Module 7</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m5')">← Module 5</button><button class="btn ghost" onclick="go('m7')">Module 7 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 7 ============ -->
+<section class="view" id="v-m7"><div class="wrap">
+  <div class="eyebrow">Module 7 / The frontier</div>
+  <h2 class="big">SEO experimentation: proof over promises</h2>
+  <p class="lede">Proving changes cause results instead of asserting it. This is what separates "trust me" SEO from the version that survives a room full of engineers.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>"This will help rankings" loses to a feature request every time. "We tested on 200 pages and saw a 14% click lift at 95% confidence" wins engineering resources. Experimentation is how SEO buys priority.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>This module is about proving your change caused the improvement, instead of hoping. You cannot show Google two versions of the same page (that's cloaking), so instead you take 400 similar pages, change 200, leave 200 alone, and watch whether the changed group pulls ahead. The untouched group is your alibi: if traffic rose everywhere because of the season, it rose there too, and comparing the groups subtracts that noise automatically.</span></div>
+
+  <h3 class="sec">Why SEO tests are different</h3>
+  <p>You can't show Google two versions of one page: that's cloaking. So SEO tests split at the <strong>page group level</strong>. Take 400 similar pages, randomly assign 200 to treatment (new title format, added schema) and 200 to control, and compare each group's trend against its own baseline. The method is difference in differences: did treatment diverge from control after the change?</p>
+
+  <figure>
+    <svg viewBox="0 0 840 280" width="100%" role="img" aria-label="Difference in differences chart">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <g stroke="#d6d2c2"><line x1="70" y1="20" x2="70" y2="230"/><line x1="70" y1="230" x2="810" y2="230"/></g>
+      <line x1="400" y1="20" x2="400" y2="230" stroke="#d97757" stroke-dasharray="5 4"/>
+      <text x="400" y="14" font-size="10.5" fill="#d97757" text-anchor="middle">change deployed + recrawled</text>
+      <!-- control -->
+      <path d="M70,170 L150,166 L230,172 L310,164 L400,166 L490,162 L580,166 L670,160 L790,162" fill="none" stroke="#5d5a52" stroke-width="2.5"/>
+      <!-- treatment -->
+      <path d="M70,178 L150,174 L230,180 L310,172 L400,174 L490,150 L580,128 L670,112 L790,96" fill="none" stroke="#6a9bcc" stroke-width="2.5"/>
+      <circle cx="790" cy="96" r="4" fill="#6a9bcc"/><circle cx="790" cy="162" r="4" fill="#5d5a52"/>
+      <text x="700" y="86" font-size="11" fill="#6a9bcc">treatment group</text>
+      <text x="700" y="185" font-size="11" fill="#5d5a52">control group</text>
+      <path d="M800,96 L800,162" stroke="#788c5d" stroke-width="1.5"/>
+      <text x="812" y="132" font-size="10.5" fill="#788c5d">the</text><text x="812" y="145" font-size="10.5" fill="#788c5d">effect</text>
+      <text x="70" y="252" font-size="10.5" fill="#5d5a52">weeks →</text>
+      <text x="30" y="125" font-size="10.5" fill="#5d5a52" transform="rotate(-90 30 125)">organic clicks</text>
+    </svg>
+    <div class="figcap">FIG 7.1 / Both groups wobble with seasonality. The control absorbs the noise so you can see the signal.</div>
+  </figure>
+
+  <h3 class="sec">The statistics, plain terms</h3>
+  <div class="card"><h4>Significance</h4><p class="dim">The probability your result isn't random noise. The convention is 95% confidence: a 5% chance you're fooling yourself.</p></div>
+  <div class="card"><h4>Sample size</h4><p class="dim">Small groups produce noisy results. Underpowered tests that "show" wins are how teams lie to themselves. Knowing your sample is too small, and saying so, is itself the skill.</p></div>
+  <div class="card"><h4>Measure from recrawl, not deploy</h4><p class="dim">Google has to recrawl treatment pages before the change can take effect. Your Module 2 log skills tell you exactly when that happened. This detail alone separates real practitioners from readers.</p></div>
+  <div class="card"><h4>The other kind of test: conversion experiments</h4><p class="dim">The posting also asks for A/B and multivariate tests on <strong>conversion flows</strong> (signup pages, pricing pages) using a platform like <strong>Statsig</strong>. Different game, same statistics. Here you CAN show two versions to different users, because you're testing on people, not on Google. Vocabulary to own: A/B = two versions of one thing, multivariate = several elements varied at once, and Statsig, Optimizely, and GrowthBook are tools that handle the traffic splitting and the math for you. If you can explain the control group logic above, you already understand these.</p></div>
+
+  <div class="quiz" data-mod="m7">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m7">0 / 3</span></div>
+    <div class="q"><div class="qt">Why can't you A/B test one page's title with Google?</div>
+      <button class="opt" data-ok="1">Showing Google different versions of one URL is cloaking, so you split across page groups instead</button>
+      <button class="opt" data-ok="0">Titles don't affect rankings</button>
+      <button class="opt" data-ok="0">Google's API forbids testing</button>
+      <div class="expl">SEO experiments randomize similar PAGES into treatment and control groups, then compare group trends.</div></div>
+    <div class="q"><div class="qt">Traffic rose 20% on treatment pages after your change. Before claiming victory, you check:</div>
+      <button class="opt" data-ok="0">Nothing, 20% is obviously real</button>
+      <button class="opt" data-ok="1">Whether the control group also rose, because seasonality lifts everything</button>
+      <button class="opt" data-ok="0">Competitor backlink counts</button>
+      <div class="expl">If control rose 18%, your effect is 2 points, not 20. Difference in differences exists exactly for this trap.</div></div>
+    <div class="q"><div class="qt">Your test window should start:</div>
+      <button class="opt" data-ok="0">The moment you deploy</button>
+      <button class="opt" data-ok="1">After logs confirm Google recrawled the treatment pages</button>
+      <button class="opt" data-ok="0">30 days before deploy</button>
+      <div class="expl">A change Google hasn't recrawled cannot have an effect yet. Measuring from deploy dilutes real effects with dead time.</div></div>
+    <div class="finish"><div class="msg" id="msg-m7"></div><button class="btn" style="display:none" id="done-m7" onclick="complete('m7','m8')">Mark complete → Module 8</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m6')">← Module 6</button><button class="btn ghost" onclick="go('m8')">Module 8 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 8 ============ -->
+<section class="view" id="v-m8"><div class="wrap">
+  <div class="eyebrow">Module 8 / Operations</div>
+  <h2 class="big">Observability: know before rankings drop</h2>
+  <p class="lede">Infrastructure that notices problems in hours instead of months. Dashboards for state, alerts for change.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>A deploy strips canonicals. Staging noindex ships to production. The sitemap 500s. Caught in week one these are incidents. Caught in month two via a traffic report they're disasters. Postings say "automated alerting" because companies have been burned.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Smoke detectors for your website. Small scripts check your most dangerous files every day (robots.txt, the sitemap, the homepage code) and message you the moment one changes. The whole module rests on one distinction: a dashboard is a gauge you have to remember to look at; an alert taps you on the shoulder. Catastrophes need the shoulder tap, because nobody checks a gauge at 3am.</span></div>
+
+  <h3 class="sec">The cheap monitoring stack</h3>
+  <figure>
+    <svg viewBox="0 0 840 240" width="100%" role="img" aria-label="Monitoring and alert flow">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <defs><marker id="ar8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#5d5a52" stroke-width="1.5"/></marker></defs>
+      <g font-size="10.5" text-anchor="middle">
+        <rect x="20" y="20" width="150" height="44" rx="8" fill="#ffffff" stroke="#d6d2c2"/><text x="95" y="39" fill="#141413">Daily crawl of</text><text x="95" y="53" fill="#141413">critical pages</text>
+        <rect x="20" y="76" width="150" height="44" rx="8" fill="#ffffff" stroke="#d6d2c2"/><text x="95" y="95" fill="#141413">GSC API pull</text><text x="95" y="109" fill="#5d5a52" font-size="9">clicks by page group</text>
+        <rect x="20" y="132" width="150" height="44" rx="8" fill="#ffffff" stroke="#d6d2c2"/><text x="95" y="151" fill="#141413">Log monitor</text><text x="95" y="165" fill="#5d5a52" font-size="9">crawl rate + 5xx</text>
+        <rect x="20" y="188" width="150" height="44" rx="8" fill="#ffffff" stroke="#d97757"/><text x="95" y="207" fill="#d97757">File watchers</text><text x="95" y="221" fill="#5d5a52" font-size="9">robots.txt / sitemap diff</text>
+        <rect x="330" y="100" width="170" height="56" rx="9" fill="#f0eee4" stroke="#6a9bcc"/><text x="415" y="124" fill="#6a9bcc">DIFF vs YESTERDAY</text><text x="415" y="140" fill="#5d5a52" font-size="9">status, canonical, noindex, title</text>
+        <rect x="640" y="100" width="180" height="56" rx="9" fill="#ffffff" stroke="#788c5d"/><text x="730" y="124" fill="#788c5d">SLACK / EMAIL ALERT</text><text x="730" y="140" fill="#5d5a52" font-size="9">within 24h, always</text>
+      </g>
+      <g stroke="#5d5a52" stroke-width="1.5" fill="none" marker-end="url(#ar8)">
+        <path d="M170,42 C250,42 260,110 325,120"/>
+        <path d="M170,98 C250,98 260,118 325,124"/>
+        <path d="M170,154 C250,154 260,140 325,132"/>
+        <path d="M170,210 C250,210 260,150 325,138"/>
+        <line x1="500" y1="128" x2="635" y2="128"/>
+      </g>
+    </svg>
+    <div class="figcap">FIG 8.1 / The bar: would you know within 24 hours if someone noindexed the site?</div>
+  </figure>
+
+  <div class="card"><h4>The files that kill</h4><p class="dim">robots.txt, the sitemap index, and homepage source get checked and diffed daily. A robots.txt regression is the classic silent catastrophe, and the watcher for it is about 40 lines of Python on a cron. Build it once, sell the story forever: "I built my own SEO monitoring infrastructure" is a sentence almost no consultant can say.</p></div>
+
+  <div class="quiz" data-mod="m8">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m8">0 / 3</span></div>
+    <div class="q"><div class="qt">The difference between a dashboard and an alert:</div>
+      <button class="opt" data-ok="1">Dashboards show state when you look; alerts push changes to you when they happen</button>
+      <button class="opt" data-ok="0">Alerts are for executives, dashboards for engineers</button>
+      <button class="opt" data-ok="0">There is no difference</button>
+      <div class="expl">Dashboards require someone to look at the right time. Catastrophes need alerts, because nobody looks at 3am.</div></div>
+    <div class="q"><div class="qt">Which three files deserve daily automated diff checks above all others?</div>
+      <button class="opt" data-ok="0">Privacy policy, terms, disclaimer</button>
+      <button class="opt" data-ok="1">robots.txt, sitemap index, homepage source</button>
+      <button class="opt" data-ok="0">CSS, favicon, fonts</button>
+      <div class="expl">One bad robots.txt line can deindex a business. A broken sitemap starves discovery. Homepage source catches deploy regressions like stripped canonicals.</div></div>
+    <div class="q"><div class="qt">A deploy accidentally ships noindex to production. With monitoring versus without:</div>
+      <button class="opt" data-ok="0">Same outcome either way</button>
+      <button class="opt" data-ok="1">Hours of exposure versus weeks, and rankings recover far faster from hours</button>
+      <button class="opt" data-ok="0">Monitoring prevents the deploy itself</button>
+      <div class="expl">Monitoring doesn't prevent mistakes, it shrinks their blast radius. Time to detection is the whole game.</div></div>
+    <div class="finish"><div class="msg" id="msg-m8"></div><button class="btn" style="display:none" id="done-m8" onclick="complete('m8','m9')">Mark complete → Module 9</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m7')">← Module 7</button><button class="btn ghost" onclick="go('m9')">Module 9 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 9 ============ -->
+<section class="view" id="v-m9"><div class="wrap">
+  <div class="eyebrow">Module 9 / Operations</div>
+  <h2 class="big">International SEO and hreflang</h2>
+  <p class="lede">Serving the right language version to the right searchers. Know the failure modes cold; hands on depth can wait until a client needs it.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>AI companies are expanding internationally right now, so this playbook gets built from scratch at each one. It's in the posting because nobody there has done it yet.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>hreflang is a label on each page telling Google "this is the Spanish-for-Mexico version of that English page." One rule generates nearly every failure in the wild: the labels must point both ways. The English page points to the Spanish one AND the Spanish page points back, or Google ignores both. The rest of the module is where the labels live and two habits (forced redirects by location, raw machine translation) that quietly break international sites.</span></div>
+
+  <h3 class="sec">The rule that generates all the failures</h3>
+  <figure>
+    <svg viewBox="0 0 840 200" width="100%" role="img" aria-label="Bidirectional hreflang requirement">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <defs><marker id="ar9" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#5d5a52" stroke-width="1.5"/></marker></defs>
+      <g font-size="11.5" text-anchor="middle">
+        <rect x="80" y="60" width="200" height="60" rx="10" fill="#ffffff" stroke="#6a9bcc"/>
+        <text x="180" y="86" fill="#141413">site.com/pricing</text><text x="180" y="104" fill="#6a9bcc" font-size="10">en</text>
+        <rect x="560" y="60" width="200" height="60" rx="10" fill="#ffffff" stroke="#d97757"/>
+        <text x="660" y="86" fill="#141413">site.com/mx/pricing</text><text x="660" y="104" fill="#d97757" font-size="10">es-mx</text>
+      </g>
+      <g stroke-width="1.5" fill="none" marker-end="url(#ar9)">
+        <path d="M280,78 C380,58 460,58 555,78" stroke="#788c5d"/>
+        <path d="M560,102 C460,122 380,122 285,102" stroke="#788c5d"/>
+      </g>
+      <text x="420" y="52" font-size="10.5" fill="#788c5d" text-anchor="middle">points to Spanish version</text>
+      <text x="420" y="140" font-size="10.5" fill="#788c5d" text-anchor="middle">AND points back, or BOTH are ignored</text>
+      <text x="420" y="180" font-size="10.5" fill="#5d5a52" text-anchor="middle">Plus: every page self references, and made up language codes fail silently</text>
+    </svg>
+    <div class="figcap">FIG 9.1 / Bidirectionality. The single rule behind most broken international setups.</div>
+  </figure>
+
+  <div class="card"><h4>Structure decision first</h4><p class="dim">Subdirectories (site.com/mx/) usually beat ccTLDs and subdomains for SaaS: consolidated authority, one infrastructure. Sitemap based hreflang scales best at volume.</p></div>
+  <div class="card"><h4>Never auto redirect by IP</h4><p class="dim">Googlebot crawls from the US. Auto redirect by location and Google only ever sees your US version. Suggest the local version with a banner instead.</p></div>
+  <div class="card"><h4>Localize, don't just translate</h4><p class="dim">Currency, pricing, examples, and entities need localizing. Unreviewed machine translation at scale is a quality risk that can drag the whole domain.</p></div>
+
+  <div class="quiz" data-mod="m9">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m9">0 / 3</span></div>
+    <div class="q"><div class="qt">The English page declares its Spanish version, but the Spanish page has no return annotation. Result:</div>
+      <button class="opt" data-ok="1">Both annotations get ignored: hreflang must be bidirectional</button>
+      <button class="opt" data-ok="0">Half credit, the English one still works</button>
+      <button class="opt" data-ok="0">A spam penalty</button>
+      <div class="expl">One way annotations fail completely. Bidirectionality plus self references is the entire integrity check.</div></div>
+    <div class="q"><div class="qt">Why is IP based auto redirect poison for international SEO?</div>
+      <button class="opt" data-ok="0">It slows the site down</button>
+      <button class="opt" data-ok="1">Googlebot crawls from the US, so it only ever sees the US version of every page</button>
+      <button class="opt" data-ok="0">Users dislike being redirected</button>
+      <div class="expl">Force redirect by location and your international pages become invisible to the crawler. Banner suggestions, never forced redirects.</div></div>
+    <div class="q"><div class="qt">For most SaaS companies, the best international structure is:</div>
+      <button class="opt" data-ok="0">Separate ccTLD domains per country</button>
+      <button class="opt" data-ok="1">Subdirectories on the main domain, consolidating authority on one infrastructure</button>
+      <button class="opt" data-ok="0">One page with a language dropdown that swaps text via JS</button>
+      <div class="expl">Subdirectories inherit domain authority and share infrastructure. The JS swap option makes alternate languages invisible to crawlers entirely.</div></div>
+    <div class="finish"><div class="msg" id="msg-m9"></div><button class="btn" style="display:none" id="done-m9" onclick="complete('m9','m10')">Mark complete → Module 10</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m8')">← Module 8</button><button class="btn ghost" onclick="go('m10')">Module 10 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 10 ============ -->
+<section class="view" id="v-m10"><div class="wrap">
+  <div class="eyebrow">Module 10 / Operations</div>
+  <h2 class="big">The operator layer</h2>
+  <p class="lede">The difference between an SEO who knows things and a Lead who ships things through other people's teams. You already run this playbook across three businesses. This is the translation.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>Every SEO recommendation competes with product features for engineering time. The Lead who frames work in tickets, data, and business metrics gets resourced. The one who says "Google likes it" gets ignored.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>You can be right about everything and still lose, because every SEO fix competes with product features for the same engineers. This module is the politics: write requests as tickets with clear finish lines, explain them as mechanisms ("30% of Google's visits are wasted on redirects") instead of folklore ("Google likes it"), and report results as money, not rankings. After 15 years of running your own businesses, this is the one module where you're translating skills you already have rather than learning new ones.</span></div>
+
+  <h3 class="sec">The ICE roadmap</h3>
+  <table>
+    <tr><th>Initiative</th><th>Impact</th><th>Confidence</th><th>Effort</th><th>Score</th></tr>
+    <tr><td>Fix slug split + redirect (livable-bids → livable-estimates)</td><td class="mono">7</td><td class="mono">9</td><td class="mono">2</td><td class="mono" style="color:var(--green)">31.5</td></tr>
+    <tr><td>Answer first restructure on calculator pages</td><td class="mono">8</td><td class="mono">7</td><td class="mono">4</td><td class="mono" style="color:var(--green)">14.0</td></tr>
+    <tr><td>Mintlify docs for the plugin suite</td><td class="mono">9</td><td class="mono">6</td><td class="mono">6</td><td class="mono">9.0</td></tr>
+    <tr><td>robots.txt + canonical watcher</td><td class="mono">6</td><td class="mono">8</td><td class="mono">3</td><td class="mono">16.0</td></tr>
+  </table>
+  <p class="dim">Score = Impact × Confidence ÷ Effort. Every item states what changes, what's expected, how it's measured, and what it costs engineering. Public to stakeholders, rebalanced quarterly.</p>
+
+  <h3 class="sec">One roadmap, three audiences</h3>
+  <p>The posting puts the content roadmap across <strong>developers, enterprise buyers, and prosumers</strong> in the core responsibilities, and each group searches differently. Developers search error messages and "how do I" questions and land on docs (Module 5's territory). Enterprise buyers search comparisons, pricing, security, and compliance and land on marketing pages. Prosumers search "how to use Claude for X" and land on help content and use case pages. A senior roadmap names which audience each initiative serves and which property (docs, anthropic.com, claude.ai) does the serving. Saying that sentence in an interview shows you read the role correctly: it spans all three properties, not just the marketing site.</p>
+
+  <h3 class="sec">Working with engineers: the actual rules</h3>
+  <div class="card"><h4>Tickets, not Slack messages</h4><p class="dim">File in their system with acceptance criteria. Requests that live in chat die in chat.</p></div>
+  <div class="card"><h4>Their language, not yours</h4><p class="dim">Crawl efficiency, response codes, render cost. Never "Google likes it." Bring logs and Search Console data, not blog posts.</p></div>
+  <div class="card"><h4>Attach, don't compete</h4><p class="dim">The migration is happening anyway. Attach your redirect map to it instead of filing a rival project.</p></div>
+  <div class="card"><h4>Report business, not vanity</h4><p class="dim">Signups and pipeline from organic, not rankings and DA. Annotate every deploy and algorithm update on traffic charts so causation questions have answers. Forecast in ranges, conservatively.</p></div>
+
+  <div class="quiz" data-mod="m10">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m10">0 / 3</span></div>
+    <div class="q"><div class="qt">The highest scoring roadmap item is usually:</div>
+      <button class="opt" data-ok="0">The biggest possible impact regardless of cost</button>
+      <button class="opt" data-ok="1">High confidence, meaningful impact, low effort: the quick wins that build credibility for bigger asks</button>
+      <button class="opt" data-ok="0">Whatever the CEO mentioned last</button>
+      <div class="expl">ICE math favors cheap sure things early. Shipped wins buy the political capital for expensive bets later.</div></div>
+    <div class="q"><div class="qt">The most persuasive framing for an engineering team:</div>
+      <button class="opt" data-ok="0">"Google's algorithm prefers this"</button>
+      <button class="opt" data-ok="0">"Every competitor is doing it"</button>
+      <button class="opt" data-ok="1">"Logs show 30% of Googlebot requests hit redirects; fixing source links reclaims that crawl capacity"</button>
+      <div class="expl">Mechanism plus measurement in their vocabulary. Engineers act on observable systems, not on Google folklore.</div></div>
+    <div class="q"><div class="qt">Leadership asks why organic dipped in March. The credible answer comes from:</div>
+      <button class="opt" data-ok="1">Annotated charts marking every deploy and algorithm update, so causes are visible</button>
+      <button class="opt" data-ok="0">Blaming the algorithm by default</button>
+      <button class="opt" data-ok="0">Changing the date range until the dip disappears</button>
+      <div class="expl">Annotation discipline turns "we think" into "on March 12 we deployed X and the divergence starts there." That's the operator standard.</div></div>
+    <div class="finish"><div class="msg" id="msg-m10"></div><button class="btn" style="display:none" id="done-m10" onclick="complete('m10','elt')">Mark complete → Module 11</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m9')">← Module 9</button><button class="btn ghost" onclick="go('elt')">Module 11 →</button></div>
+</div></section>
+
+<!-- ============ MODULE 11: ELT + BIGQUERY ============ -->
+<section class="view" id="v-elt"><div class="wrap">
+  <div class="eyebrow">Module 11 / Operations</div>
+  <h2 class="big">ELT and BigQuery: SEO data at scale</h2>
+  <p class="lede">The posting asks for "ELT pipelines" and "BigQuery." Translation: automatically copy all your SEO data into one giant searchable database, because at 80,000 pages the normal tools stop working.</p>
+  <div class="payline"><span class="tag">Why it pays</span><span>Search Console's interface shows you 1,000 rows at a time and deletes everything older than 16 months. A SaaS site with tens of thousands of docs pages generates data those limits butcher. The SEO who can query the full dataset answers questions everyone else has to guess at.</span></div>
+
+  <h3 class="sec">The jargon, translated</h3>
+  <div class="grid2">
+    <div class="card"><h4>Data warehouse</h4><p class="dim">One big searchable filing cabinet in the cloud where all your data lives together. BigQuery is Google's version. You never install anything or manage a server: you upload data and ask it questions.</p></div>
+    <div class="card"><h4>Pipeline</h4><p class="dim">An automated job that copies data from point A to point B on a schedule, with no human touching it. "Build a pipeline" just means "make the copying happen every day by itself."</p></div>
+    <div class="card"><h4>SQL</h4><p class="dim">The language you use to ask a database questions. It reads almost like English ("SELECT url ... WHERE clicks = 0") and an SEO needs about six keywords of it. Taught below.</p></div>
+    <div class="card"><h4>ELT: Extract, Load, Transform</h4><p class="dim">Extract = pull data out of the source. Load = dump it into the warehouse raw, exactly as it came. Transform = clean and reshape it afterwards, with SQL. Groceries analogy: bring everything home first, cook later.</p></div>
+  </div>
+  <div class="card"><h4>Why the letters are in that order (ELT vs the older ETL)</h4><p class="dim">The older pattern, ETL, cleaned data BEFORE storing it. If the cleaning logic was wrong, the original data was gone forever. Then cloud storage got absurdly cheap, so the industry flipped: store everything raw, clean it later with a query you can rewrite any time. Postings say ELT because that's the modern default. You don't need to know more than this paragraph.</p></div>
+
+  <h3 class="sec">The pipeline you'd actually build</h3>
+  <figure>
+    <svg viewBox="0 0 840 170" width="100%" role="img" aria-label="ELT pipeline flow for SEO data">
+      <rect x="0" y="0" width="100%" height="100%" fill="#f4f2ea" rx="12"/>
+      <defs><marker id="ar12" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#5d5a52" stroke-width="1.5"/></marker></defs>
+      <g font-size="11" text-anchor="middle">
+        <rect x="15" y="58" width="130" height="50" rx="9" fill="#ffffff" stroke="#d6d2c2"/><text x="80" y="80" fill="#141413">EXTRACT</text><text x="80" y="96" fill="#5d5a52" font-size="9">GSC, logs, crawls</text>
+        <rect x="185" y="58" width="120" height="50" rx="9" fill="#ffffff" stroke="#d97757"/><text x="245" y="80" fill="#d97757">LOAD</text><text x="245" y="96" fill="#5d5a52" font-size="9">dump it in raw</text>
+        <rect x="345" y="58" width="150" height="50" rx="9" fill="#ffffff" stroke="#6a9bcc"/><text x="420" y="80" fill="#6a9bcc">BIGQUERY</text><text x="420" y="96" fill="#5d5a52" font-size="9">the warehouse</text>
+        <rect x="535" y="58" width="140" height="50" rx="9" fill="#ffffff" stroke="#d6d2c2"/><text x="605" y="80" fill="#141413">TRANSFORM</text><text x="605" y="96" fill="#5d5a52" font-size="9">SQL cleans + joins</text>
+        <rect x="715" y="58" width="110" height="50" rx="9" fill="#ffffff" stroke="#788c5d"/><text x="770" y="80" fill="#788c5d">ANSWERS</text><text x="770" y="96" fill="#5d5a52" font-size="9">dashboards, alerts</text>
+      </g>
+      <g stroke="#5d5a52" stroke-width="1.5" fill="none" marker-end="url(#ar12)">
+        <line x1="145" y1="83" x2="180" y2="83"/><line x1="305" y1="83" x2="340" y2="83"/><line x1="495" y1="83" x2="530" y2="83"/><line x1="675" y1="83" x2="710" y2="83"/>
+      </g>
+      <text x="245" y="140" font-size="10.5" fill="#d97757" text-anchor="middle">← nothing gets cleaned before storage</text>
+      <text x="605" y="140" font-size="10.5" fill="#6a9bcc" text-anchor="middle">← cleanup is a query you can redo anytime</text>
+    </svg>
+    <div class="figcap">FIG 11.1 / Extract, Load, THEN Transform. The raw copy stays forever; the cleanup is disposable.</div>
+  </figure>
+  <p>The magic ingredient for SEOs: Google offers a built in <strong>Search Console bulk export</strong>. Flip one switch and GSC streams its complete data into BigQuery every day automatically. That's your extract and load solved for free, no code. Your only real work is the T: writing queries.</p>
+
+  <h3 class="sec">Why bother: the interface versus the warehouse</h3>
+  <table>
+    <tr><th>Question</th><th>GSC interface</th><th>Bulk export → BigQuery</th></tr>
+    <tr><td>How many rows can I see?</td><td class="mono">~1,000 per report</td><td class="mono">every row, millions if they exist</td></tr>
+    <tr><td>How far back?</td><td class="mono">16 months, then gone</td><td class="mono">forever: you own the copy</td></tr>
+    <tr><td>Cross it with server logs?</td><td class="mono">impossible</td><td class="mono">one JOIN query</td></tr>
+    <tr><td>"Which of 80k docs pages get impressions but zero clicks?"</td><td class="mono">can't answer at scale</td><td class="mono">a six line query</td></tr>
+  </table>
+  <p class="dim">One honest caveat: even the bulk export withholds a slice of rare, privacy filtered queries. Everything else is complete. Also: export starts collecting from the day you enable it, nothing retroactive, so switching it on early is the whole game.</p>
+
+  <h3 class="sec">The only SQL you need to start</h3>
+  <div class="term"><span class="c">-- pages people see but never click: your title rewrite list</span><br><span class="g">SELECT</span> url, <span class="cy">SUM</span>(impressions) <span class="g">AS</span> impressions, <span class="cy">SUM</span>(clicks) <span class="g">AS</span> clicks<br><span class="g">FROM</span> searchdata_url_impression<br><span class="g">WHERE</span> data_date >= <span class="a">'2026-06-01'</span><br><span class="g">GROUP BY</span> url<br><span class="g">HAVING</span> <span class="cy">SUM</span>(clicks) = 0 <span class="g">AND</span> <span class="cy">SUM</span>(impressions) > 500<br><span class="g">ORDER BY</span> impressions <span class="g">DESC</span></div>
+  <div class="card"><h4>Line by line, in English</h4><p class="dim"><strong>SELECT</strong> = which columns you want back. <strong>FROM</strong> = which table to look in (that's the GSC export's page level table). <strong>WHERE</strong> = keep only rows matching a condition. <strong>GROUP BY</strong> = collapse many rows into one per URL, adding up the numbers. <strong>HAVING</strong> = filter on those added up totals. <strong>ORDER BY</strong> = sort. That's roughly 80% of all the SQL an SEO ever writes: six keywords.</p></div>
+  <div class="card"><h4>The bill, demystified</h4><p class="dim">BigQuery charges for data <strong>scanned per query</strong>, not for time or servers, and the free tier covers 1 terabyte of scanning a month. A year of GSC data for most sites is a few gigabytes. Practical habits: SELECT only the columns you need (never SELECT *) and always filter on the date column. Do that and SEO scale work rounds to free.</p></div>
+  <div class="chips"><span class="chip hot">GSC bulk export</span><span class="chip hot">BigQuery</span><span class="chip">Looker Studio</span><span class="chip">Scheduled queries</span><span class="chip">dbt (later)</span></div>
+  <p class="dim">Looker Studio is Google's free dashboard tool that plugs straight into BigQuery: your queries become charts stakeholders can see. Scheduled queries rerun your SQL daily, which combined with Module 8 is how "automated alerting" gets built. dbt is what data teams use to organize transforms; know the name, learn it only if a role demands it.</p>
+  <div class="card"><h4>The other names in the posting: GA4, Segment, Hex</h4><p class="dim"><strong>Google Analytics 4</strong> measures what visitors do AFTER they land: signups, clicks, conversions. Search Console covers before the click, GA4 after, and joining the two in BigQuery is the full picture. <strong>Segment</strong> is plumbing: it collects events from your site once and forwards them to every tool that needs them, including BigQuery. <strong>Hex</strong> is the dashboard and notebook tool Anthropic's data teams use to share queries: think Looker Studio's more technical sibling. You don't need to master any of these to interview well. Know what each one is FOR and say it plainly; that already beats most candidates.</p></div>
+
+  <div class="quiz" data-mod="elt">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-elt">0 / 3</span></div>
+    <div class="q"><div class="qt">In ELT, where does data cleanup happen?</div>
+      <button class="opt" data-ok="0">Before loading, so the warehouse stays tidy</button>
+      <button class="opt" data-ok="1">After loading, inside the warehouse, using SQL you can rewrite anytime</button>
+      <button class="opt" data-ok="0">It doesn't: raw data is used directly</button>
+      <div class="expl">Load raw first, transform after. The raw copy is permanent; the cleanup is a disposable query. That order is the entire difference from the older ETL pattern.</div></div>
+    <div class="q"><div class="qt">Why pipe Search Console data into BigQuery at all?</div>
+      <button class="opt" data-ok="0">BigQuery data ranks pages higher</button>
+      <button class="opt" data-ok="1">The GSC interface caps reports near 1,000 rows and deletes history at 16 months; the export removes both limits and lets you join with logs</button>
+      <button class="opt" data-ok="0">Google requires it for large sites</button>
+      <div class="expl">The interface is a summary viewport. At 80,000 pages you need every row, permanent history, and the ability to cross reference logs. Only the warehouse gives you that.</div></div>
+    <div class="q"><div class="qt">BigQuery's pricing mostly charges you for:</div>
+      <button class="opt" data-ok="0">How many hours your server runs</button>
+      <button class="opt" data-ok="0">How many dashboards you build</button>
+      <button class="opt" data-ok="1">How much data each query scans, which is why you select only needed columns and filter by date</button>
+      <div class="expl">No servers exist for you to pay for. Scanning is the meter, the free tier is 1TB a month, and lean queries keep SEO work effectively free.</div></div>
+    <div class="finish"><div class="msg" id="msg-elt"></div><button class="btn" style="display:none" id="done-elt" onclick="complete('elt','m11')">Mark complete → Land the Job</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('m10')">← Module 10</button><button class="btn ghost" onclick="go('m11')">Land the Job →</button></div>
+</div></section>
+
+<!-- ============ MODULE 12: LAND THE JOB ============ -->
+<section class="view" id="v-m11"><div class="wrap">
+  <div class="eyebrow">Module 12 / The application</div>
+  <h2 class="big">Preparing for the Anthropic SEO Lead job</h2>
+  <p class="lede">Everything below works for any senior SaaS SEO role. Anthropic is the worked example because its posting is the course blueprint. One honesty note up front: the interview loop described here is the typical shape for senior roles at AI companies, not insider knowledge of their exact process.</p>
+  <div class="payline"><span class="tag">Ground rule</span><span>Anthropic publishes a policy on how candidates may use AI in their application process. Read it before you write a word, and follow it exactly. Getting disqualified on process at a company that builds AI would be the worst possible way to lose.</span></div>
+
+  <h3 class="sec">Step 1: Map every requirement to proof</h3>
+  <p>Senior applications are won by evidence, not adjectives. Every line of the posting gets a matching artifact. The six deliverables from the 90 day plan exist for exactly this table.</p>
+  <table>
+    <tr><th>They ask for</th><th>You show</th></tr>
+    <tr><td>Log file analysis and crawl budget</td><td class="mono">Your 30 day log analysis writeup with before and after waste numbers</td></tr>
+    <tr><td>JS rendering and SSG understanding</td><td class="mono">Your rendering audit comparing a WP site and a Next.js SaaS site</td></tr>
+    <tr><td>Migrations and canonicalization</td><td class="mono">The documented slug migration with GSC screenshots</td></tr>
+    <tr><td>Observability with alerting</td><td class="mono">Your robots.txt and canonical watcher, running live</td></tr>
+    <tr><td>Docs platform experience</td><td class="mono">The Mintlify docs site you built for your own product</td></tr>
+    <tr><td>AEO and GEO strategy</td><td class="mono">Your citation research: 20 queries, 3 engines, logged monthly</td></tr>
+    <tr><td>Experimentation and statistics</td><td class="mono">Your title test writeup, including the honest sample size limits</td></tr>
+    <tr><td>ELT pipelines and BigQuery</td><td class="mono">GSC bulk export wired into BigQuery, plus your saved query library and one Looker Studio dashboard</td></tr>
+    <tr><td>Stakeholder influence</td><td class="mono">The ICE roadmap document, plus 15 years of running your own P and L</td></tr>
+  </table>
+
+  <h3 class="sec">Step 2: The resume rewrite</h3>
+  <div class="card"><h4>Lead with systems, not tenure</h4><p class="dim">"15 years of SEO" is table stakes at this level. "Built SEO monitoring infrastructure, ran page group experiments, and shipped a documented migration" is the language of the posting. Mirror their vocabulary: crawl budget, observability, page group testing, AEO. Recruiters screen against the posting's words.</p></div>
+  <div class="card"><h4>Convert business ownership into their frame</h4><p class="dim">You've run multiple companies. Translate that: owning revenue, prioritizing roadmaps, shipping without permission. That IS the "high degree of autonomy" they're screening for. Most agency SEOs can't claim it.</p></div>
+  <div class="card"><h4>Publish before you apply</h4><p class="dim">Your log analysis, citation research, and pattern analysis of SaaS SEO postings should be live under your name before the application goes in. A hiring manager who Googles you and finds exactly the work the role requires is half convinced before the first call.</p></div>
+
+  <h3 class="sec">Step 3: The likely loop and what each stage tests</h3>
+  <table>
+    <tr><th>Stage</th><th>What it really tests</th><th>Your move</th></tr>
+    <tr><td>Recruiter screen</td><td>Baseline fit, comp expectations, communication</td><td>Tight two minute story. Name the range from the posting when asked</td></tr>
+    <tr><td>Hiring manager</td><td>Judgment and prioritization</td><td>Bring your 90 day plan for THEIR properties, not generic answers</td></tr>
+    <tr><td>Work sample exercise</td><td>Can you actually do the work</td><td>Likely an audit or strategy doc for their sites. Follow their AI usage policy to the letter</td></tr>
+    <tr><td>Technical deep dive</td><td>Depth under questioning</td><td>Modules 1 through 4 of this course, cold</td></tr>
+    <tr><td>Cross functional panel</td><td>Can engineers stand working with you</td><td>Module 10 language: tickets, mechanisms, measurements</td></tr>
+    <tr><td>Values conversation</td><td>Genuine interest in the mission</td><td>Have a real opinion on how AI changes search. You do already</td></tr>
+  </table>
+
+  <h3 class="sec">Step 4: Questions to drill until they're boring</h3>
+  <div class="card"><h4>"Walk me through diagnosing a sudden 40% organic traffic drop."</h4><p class="dim">Strong answer runs the pipeline in order: check for manual actions and algorithm updates first, then infrastructure (robots.txt diff, bot rules, 5xx in logs), then indexing (GSC coverage), then rendering, then SERP feature shifts. The order proves you think in systems. Guessing "content quality" first fails.</p></div>
+  <div class="card"><h4>"Our docs have 80,000 pages. How do you prioritize?"</h4><p class="dim">Log analysis for crawl allocation, GSC for impression opportunity, internal search data for content gaps, then a segmented plan by template type. Naming data sources before tactics is the senior tell.</p></div>
+  <div class="card"><h4>"How would you approach AI Overviews for our properties?"</h4><p class="dim">Retrievability first, chunk structure second, entity consistency third, measurement loop fourth. Cite your own citation research. You'll know more about this than most interviewers, and that's the point.</p></div>
+  <div class="card"><h4>"Tell me about an experiment that failed."</h4><p class="dim">They're testing intellectual honesty. Your title test with its sample size limits is a perfect answer: designed properly, read honestly, learned from. Never claim every test won.</p></div>
+
+  <h3 class="sec">Step 5: Handling the gap question</h3>
+  <p>Someone will ask why a publisher and local SEO background fits a developer tools role. Do not dodge it. The framework: name it before they do, show the overlap is bigger than the gap, and point at receipts. Something like: most of my career was consumer and publisher SEO, which is why over the past months I rebuilt my practice around the technical stack this role needs, then show the log analysis, the watcher, the docs site. A named gap with evidence of closing it beats a pretended qualification every time. Interviewers at this level have seen a thousand fakers and zero honest operators, and the contrast works in your favor.</p>
+
+  <h3 class="sec">Step 6: Your questions for them</h3>
+  <div class="grid2">
+    <div class="card"><h4>Resourcing</h4><p class="dim">"How do SEO requests get engineering time today, and what's the biggest one that stalled?"</p></div>
+    <div class="card"><h4>Baseline</h4><p class="dim">"What does organic measurement look like now: dashboards, log access, experiment tooling?"</p></div>
+    <div class="card"><h4>Mandate</h4><p class="dim">"What would make the first year a clear success, in numbers?"</p></div>
+    <div class="card"><h4>The frontier</h4><p class="dim">"How is the company thinking about traffic in a world where its own products answer questions?"</p></div>
+  </div>
+  <p class="dim">That last one is the money question at an AI company. Asking it well signals you understand their strategic tension better than other candidates.</p>
+
+  <h3 class="sec">Step 7: Comp</h3>
+  <p class="dim">The posted range is $255K to $320K plus equity. Ranges are posted because regulations require it, and offers usually land below the top unless you bring leverage. Your leverage: published work, the frontier skills (GEO, docs SEO) that thin the candidate pool, and genuine alternatives (your own businesses are a real BATNA, use that calmly). Never negotiate against yourself by naming a number below the posted floor.</p>
+
+  <div class="quiz" data-mod="m11">
+    <div class="qhead"><h4>Checkpoint</h4><span class="score" id="sc-m11">0 / 3</span></div>
+    <div class="q"><div class="qt">The strongest response to "why does your background fit this role?"</div>
+      <button class="opt" data-ok="0">Avoid mentioning the publisher background entirely</button>
+      <button class="opt" data-ok="1">Name the gap yourself, then show the artifacts proving you closed it</button>
+      <button class="opt" data-ok="0">Claim publisher SEO and technical SaaS SEO are the same job</button>
+      <div class="expl">Named gap plus receipts beats pretended qualification. Interviewers reward honesty they can verify.</div></div>
+    <div class="q"><div class="qt">Asked to diagnose a sudden 40% traffic drop, you start with:</div>
+      <button class="opt" data-ok="0">Rewriting the content on top pages</button>
+      <button class="opt" data-ok="1">Manual actions and algorithm updates, then infrastructure diffs and logs, working the pipeline in order</button>
+      <button class="opt" data-ok="0">A competitor backlink audit</button>
+      <div class="expl">Systematic elimination in pipeline order proves systems thinking. Jumping to content first is the junior tell.</div></div>
+    <div class="q"><div class="qt">The work sample exercise arrives. Your first read is:</div>
+      <button class="opt" data-ok="1">Their candidate AI usage policy, so your process can't disqualify your work</button>
+      <button class="opt" data-ok="0">A competitor's audit to copy the structure</button>
+      <button class="opt" data-ok="0">The comp range again</button>
+      <div class="expl">Process compliance is binary at a company that builds AI and publishes rules about using it. Brilliant work delivered against the rules still loses.</div></div>
+    <div class="finish"><div class="msg" id="msg-m11"></div><button class="btn" style="display:none" id="done-m11" onclick="complete('m11','plan')">Mark complete → 90 Day Plan</button></div>
+  </div>
+  <div class="navrow"><button class="btn ghost" onclick="go('elt')">← Module 11</button><button class="btn ghost" onclick="go('plan')">90 Day Plan →</button></div>
+</div></section>
+
+<!-- ============ 90 DAY PLAN ============ -->
+<section class="view" id="v-plan"><div class="wrap">
+  <div class="eyebrow">Execution</div>
+  <h2 class="big">The 90 day plan</h2>
+  <p class="lede">Front loads the hard stuff. By day 90 you have six deliverables that double as the training product, the content, and the service credibility. The practice projects ARE the reverse engineering.</p>
+
+  <div class="phase">
+    <div class="d">DAYS<br>01–30</div>
+    <div>
+      <h4>Foundations: logs and rendering</h4>
+      <p class="dim">Modules 1 and 2. Read Google's Search Central docs, especially the JavaScript SEO section (the best free resource that exists). Pull 30 days of your access logs and run the five standard questions. Run the rendering audit on livableforms.com plus one modern SaaS site. Also flip on the GSC bulk export to BigQuery on day one (Module 11): it only collects data going forward, so every day you wait is history you never get back.</p>
+      <div class="deliv">→ Deliverables: log analysis writeup + rendering audit</div>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="d">DAYS<br>31–60</div>
+    <div>
+      <h4>Infrastructure and implementation</h4>
+      <p class="dim">Modules 3 and 4. Execute the livable-estimates slug migration as a deliberate, documented mini migration. Hand write JSON-LD for key pages. Fix your top LCP issue and verify in field data. Audit your Cloudflare config for SEO impact.</p>
+      <div class="deliv">→ Deliverables: documented migration + before/after Vitals</div>
+    </div>
+  </div>
+  <div class="phase">
+    <div class="d">DAYS<br>61–90</div>
+    <div>
+      <h4>The frontier skills</h4>
+      <p class="dim">Modules 5, 6, 8. Spin up Mintlify docs for the Livable suite. Run 20 money queries through Perplexity, ChatGPT, and AI Overviews and log every citation, then restructure two pages answer first and retest. Build the robots.txt and canonical watcher. Write your first three BigQuery queries against the GSC export that's been filling since day one, and put one on a Looker Studio dashboard.</p>
+      <div class="deliv">→ Deliverables: live docs site + citation research + working monitor + BigQuery query library</div>
+    </div>
+  </div>
+  <div class="phase" style="border-bottom:0">
+    <div class="d">ONGOING</div>
+    <div>
+      <h4>Background threads</h4>
+      <p class="dim">Module 7 runs the whole time: start the title test on your calculator pages in week 2, read results honestly in week 10, including the sample size limits. Modules 9 and 10 are reading plus one ICE roadmap document you'll reuse for every future client.</p>
+      <div class="deliv">→ At day 90: six real deliverables + raw material for content, training product, and service offer</div>
+    </div>
+  </div>
+
+  <h3 class="sec">Read this, skip the rest</h3>
+  <p class="dim">Google Search Central documentation first and above all. web.dev for Vitals. Screaming Frog's log analysis guides. Skip most SEO blogs, most courses, and anything selling AI SEO secrets: the gap between you and this job is hands on reps, not more reading.</p>
+  <div class="card"><h4>Two prerequisites this course can't replace</h4><p class="dim"><strong>HTML and CSS.</strong> The posting requires enough proficiency to "review code for SEO issues": spot a missing canonical tag, a stray noindex meta, a heading hidden behind JavaScript, a link built as a button. MDN's free HTML and CSS intros plus reading view source on sites you know gets you there in a few weeks of evenings. <strong>Tool reps.</strong> Screaming Frog, Ahrefs, SEMrush, and Search Console are listed as hands on requirements. Screaming Frog is free up to 500 URLs: crawl your own site weekly during the 90 days until its reports feel boring. Ahrefs and SEMrush both have cheap trial tiers; run their site audits on your own properties so you can speak to what each tool is for.</p></div>
+
+  <div class="navrow"><button class="btn ghost" onclick="go('m10')">← Module 10</button><button class="btn" onclick="go('talk')">Talk Track →</button></div>
+</div></section>
+
+<!-- ============ TALK TRACK ============ -->
+<section class="view" id="v-talk"><div class="wrap">
+  <div class="eyebrow">Execution</div>
+  <h2 class="big">The talk track</h2>
+  <p class="lede">Knowing the material and sounding senior in a conversation are two different skills. This page is the second one: the structures that organize any answer, the insights worth saying out loud, and the drills that make both automatic.</p>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Senior conversations aren't won by knowing more facts. They're won by structure (your answer has a visible order), insight (you say one thing the listener hadn't considered), and calibration (you match the depth to the person). All three are practicable.</span></div>
+
+  <h3 class="sec">The three answer structures</h3>
+  <p>Nearly every question you'll face in an interview or a stakeholder meeting is one of three types. Each has a structure that makes any answer sound organized, because it is.</p>
+  <div class="card"><h4>1. Diagnosis questions → walk the pipeline in order</h4><p class="dim">"Traffic dropped 40%, what do you do?" Answer in pipeline order, out loud: manual actions and algorithm updates first, then infrastructure (robots.txt diffs, bot rules, 5xx in logs), then indexing (GSC coverage), then rendering, then SERP changes. Naming your order before diving in is the senior tell. Jumping straight to "probably content quality" is the junior one.</p></div>
+  <div class="card"><h4>2. Prioritization questions → name data sources before tactics</h4><p class="dim">"80,000 docs pages, where do you start?" Name where the evidence comes from before what you'd do: logs tell me where Google spends, GSC tells me where impressions are, internal search tells me what's missing, then I segment by template and rank by ICE. Data sources first, tactics second, always.</p></div>
+  <div class="card"><h4>3. Recommendation questions → mechanism, measurement, cost</h4><p class="dim">"Should we do X?" Three beats: the mechanism (what physically changes in how Google processes the site), the measurement (what number moves and how you'll isolate it), the cost (what it takes from engineering). "Logs show 30% of Googlebot hits land on redirects; fixing source links reclaims that capacity; it's a two day content-ops task" is a complete senior answer in one breath.</p></div>
+
+  <h3 class="sec">The insight bank</h3>
+  <p>One earned, defensible line per module. These aren't slogans to recite; each one compresses a module you've actually studied, so you can unpack it for ten minutes if challenged. Drop one where it fits and let them pull the thread.</p>
+  <table>
+    <tr><th>Topic</th><th>The line</th></tr>
+    <tr><td>Rendering</td><td>"Whether Google CAN index JavaScript isn't the question. The question is what's in the initial HTML, because rendering is a delayed second pass."</td></tr>
+    <tr><td>Logs</td><td>"Search Console is a survey. Logs are the census."</td></tr>
+    <tr><td>Canonicals</td><td>"A canonical is a hint, not a directive. If your internal links disagree with it, Google picks for you."</td></tr>
+    <tr><td>Infrastructure</td><td>"Sudden cliff drops are almost never content. Check the edge first: bot rules, 5xx spikes, robots.txt regressions."</td></tr>
+    <tr><td>Docs SEO</td><td>"At a SaaS company the docs ARE the site: 80% of the URLs and usually zero percent of the SEO attention. That's the arbitrage."</td></tr>
+    <tr><td>GEO / AEO</td><td>"GEO sits on top of SEO, not instead of it. You can't be cited if you can't be retrieved."</td></tr>
+    <tr><td>Experiments</td><td>"An underpowered test that 'won' is worse than no test. Knowing your sample is too small, and saying so, is the skill."</td></tr>
+    <tr><td>Observability</td><td>"Monitoring doesn't prevent mistakes. It shrinks their blast radius, and time to detection is the whole game."</td></tr>
+    <tr><td>International</td><td>"Most hreflang failures are one rule: the annotations have to point both ways, or Google ignores both."</td></tr>
+    <tr><td>Stakeholders</td><td>"SEO doesn't lose to bad ideas. It loses to unframed ones: no ticket, no mechanism, no number."</td></tr>
+    <tr><td>Data</td><td>"The GSC interface is a viewport, not the data. And the bulk export only collects going forward, so day one is the deadline."</td></tr>
+  </table>
+
+  <h3 class="sec">The drills</h3>
+  <div class="card"><h4>The 60 second test</h4><p class="dim">Explain each module to a smart non-SEO in 60 seconds, out loud. The Plain English boxes at the top of each module are your scripts: read one, close the tab, say it in your own words. When you can do all eleven without notes, the conversational layer is built.</p></div>
+  <div class="card"><h4>The three altitude answer</h4><p class="dim">For every topic, prepare three depths: one sentence (the insight bank line), one minute (the plain English version), and the deep dive (the module itself). Seniors read the listener and pick the altitude. Executives get the sentence, hiring managers get the minute, engineers get the dive.</p></div>
+  <div class="card"><h4>Lead with the number</h4><p class="dim">Open answers with the measurement, then the story: "Thirty percent of crawl was hitting redirects, so..." beats "So first I looked around and noticed...". Practice converting your own war stories into number-first openings. Fifteen years of experience means you have the stories; this drill is just re-cutting them.</p></div>
+  <div class="card"><h4>Record the drill questions</h4><p class="dim">Module 12 Step 4 has the four questions every interview asks. Record yourself answering each one using the structures above, listen back, and cut every sentence that doesn't carry weight. Two rounds of this is worth more than rereading any module.</p></div>
+
+  <div class="navrow"><button class="btn ghost" onclick="go('plan')">← 90 Day Plan</button><button class="btn" onclick="go('dash')">Back to dashboard</button></div>
+</div></section>
+
+</main>
+</div>
+
+<script>
+const modules=[
+ {id:'dash',label:'Dashboard',num:'◆'},
+ {id:'m1',label:'Crawl + render pipeline',num:'01'},
+ {id:'m2',label:'Log file analysis',num:'02'},
+ {id:'m3',label:'Implementation layer',num:'03'},
+ {id:'m4',label:'HTTP / CDN / Vitals',num:'04'},
+ {id:'m5',label:'Documentation SEO',num:'05'},
+ {id:'m6',label:'GEO + AEO',num:'06'},
+ {id:'m7',label:'Experimentation',num:'07'},
+ {id:'m8',label:'Observability',num:'08'},
+ {id:'m9',label:'International',num:'09'},
+ {id:'m10',label:'Operator layer',num:'10'},
+ {id:'elt',label:'ELT + BigQuery',num:'11'},
+ {id:'m11',label:'Land the job',num:'12'},
+ {id:'plan',label:'90 Day Plan',num:'▶'},
+ {id:'talk',label:'Talk Track',num:'◇'}
+];
+const state={completed:new Set(),current:'dash'};
+const nav=document.getElementById('nav');
+let html='';
+modules.forEach((m,i)=>{
+  if(i===1)html+='<div class="navlbl">Modules</div>';
+  if(m.id==='plan')html+='<div class="navlbl">Execute</div>';
+  html+=`<button class="nbtn" id="nb-${m.id}" onclick="go('${m.id}')"><span class="num">${m.num}</span>${m.label}<span class="done">✓</span></button>`;
+});
+nav.innerHTML=html;
+
+function go(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.getElementById('v-'+id).classList.add('on');
+  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nb-'+id).classList.add('active');
+  state.current=id;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function complete(id,next){
+  state.completed.add(id);
+  document.getElementById('nb-'+id).classList.add('completed');
+  const total=12;
+  const pct=Math.round(state.completed.size/total*100);
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('pfill').style.width=pct+'%';
+  go(next);
+}
+
+/* quiz wiring */
+document.querySelectorAll('.quiz').forEach(qz=>{
+  const mod=qz.dataset.mod;
+  const qs=qz.querySelectorAll('.q');
+  let answered=0,correct=0;
+  qs.forEach(q=>{
+    const opts=q.querySelectorAll('.opt');
+    opts.forEach(o=>{
+      o.addEventListener('click',()=>{
+        if(o.disabled)return;
+        opts.forEach(x=>{x.disabled=true; if(x.dataset.ok==='1')x.classList.add('right');});
+        if(o.dataset.ok==='1'){correct++;}else{o.classList.add('wrong');}
+        q.querySelector('.expl').classList.add('show');
+        answered++;
+        document.getElementById('sc-'+mod).textContent=correct+' / '+qs.length;
+        if(answered===qs.length){
+          const msg=document.getElementById('msg-'+mod);
+          if(correct===qs.length){msg.textContent='Perfect. This module is locked in.';msg.style.color='var(--green)';}
+          else if(correct>=2){msg.textContent='Solid. Reread the misses above, the explanations are the lesson.';msg.style.color='var(--amber)';}
+          else{msg.textContent='Reread this module before moving on. These concepts stack.';msg.style.color='var(--red)';}
+          document.getElementById('done-'+mod).style.display='inline-block';
+        }
+      });
+    });
+  });
+});
+go('dash');
+</script>
+</body>
+</html>
