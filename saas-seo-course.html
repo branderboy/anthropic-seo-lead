@@ -64,6 +64,8 @@ p.dim{color:var(--muted)}
 strong{color:var(--paper)}
 .payline{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:16px 18px;margin:26px 0;font-size:15px}
 .payline .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;white-space:nowrap;padding-top:3px}
+.payline.plain{border-left-color:var(--cyan)}
+.payline.plain .tag{color:var(--cyan)}
 
 /* ===== CARDS / COMPONENTS ===== */
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 1px 3px rgba(20,20,19,.07)}
@@ -260,6 +262,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">Crawl, render, index: the engineering version</h2>
   <p class="lede">Most SEOs know "Google crawls and ranks." The senior version is a pipeline with queues and budgets, where problems at each stage look completely different.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>SaaS sites run on React, Next.js, and static site generators. The person who knows whether content exists in the initial HTML or only after JavaScript execution is the person who prevents six figure indexing failures.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Google reads a page twice. First it reads the raw HTML the server sends: think of it as the letter that arrives in the mail. Later, sometimes days later, it runs the page's JavaScript to see the finished version: the letter after someone assembled the furniture inside. WordPress sites (your world) put everything in the letter. Modern SaaS sites often mail an empty box with assembly instructions, and content that only exists after assembly waits in Google's slow lane. The four strategies below are four answers to one question: who assembles the furniture, and when.</span></div>
 
   <h3 class="sec">The four rendering strategies</h3>
   <table>
@@ -305,6 +308,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">Log files: the ground truth</h2>
   <p class="lede">Search Console shows you a summary. Server logs show you every single request Googlebot ever made. Reading them is the most respected skill in the posting.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>Big SaaS sites have hundreds of thousands of URLs and a finite crawl budget. If 60% of Googlebot's visits burn on junk, new product pages index slowly and rank slowly. Finding the waste is the job.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Your web server keeps a diary: one line for every visit it has ever received, including every single visit from Google's crawler. Search Console shows you a trimmed summary of that diary; the log file is the full security camera footage. Reading it answers one question: of the limited attention Google gives your site each day (the "crawl budget"), how much lands on pages that matter and how much is wasted on junk? Everything in this module is that one question, asked five ways.</span></div>
 
   <h3 class="sec">Anatomy of a log line</h3>
   <figure>
@@ -370,6 +374,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">The implementation layer</h2>
   <p class="lede">Sitemaps, JSON-LD, canonicals, redirects, robots.txt, migrations. You know the concepts. The senior version is knowing the failure modes cold.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>SaaS companies replatform constantly: marketing site to Next.js, docs to Mintlify. Migrations are the highest stakes event in SEO, and migration expertise is in every senior posting for that reason.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>This is the module closest to what you already do: redirects, canonicals, and sitemaps are publisher SEO bread and butter. The senior difference is knowing the traps by heart. Four of them: robots.txt cannot remove a page from Google's index, a canonical tag is a suggestion Google may overrule, a sitemap full of broken URLs stops being believed, and a migration that redirects everything to the homepage burns the site's accumulated history. Learn those four cold and you interview at senior level on this topic.</span></div>
 
   <h3 class="sec">Redirect chains burn budget and dilute signals</h3>
   <figure>
@@ -432,6 +437,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">HTTP, CDN, DNS, and the Vitals</h2>
   <p class="lede">The layer under the website. Speaking this language correctly is how SEOs earn respect from engineering teams.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>The classic outage: someone enables aggressive bot protection on Cloudflare, Googlebot gets blocked, rankings crater in days, and nobody in marketing knows why. The SEO Lead is the person who checks firewall events first.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>The plumbing underneath every website, translated. DNS is the phone book that turns a domain name into a server's address. A CDN like Cloudflare keeps copies of your site around the world so pages load fast, and it employs a bouncer (bot protection) that sometimes throws Googlebot out by mistake: the classic invisible SEO disaster. Status codes are the three digit answers a server gives every request: 200 means fine, 301 means moved permanently, 404 means gone, 500 means broken. Core Web Vitals are Google's three stopwatches measuring how fast and stable a page feels to real visitors.</span></div>
 
   <h3 class="sec">Status codes that actually matter</h3>
   <table>
@@ -504,6 +510,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">Documentation SEO: the empty lane</h2>
   <p class="lede">Treating docs, help centers, and API references as an organic acquisition channel. Almost nobody sells this. It's the least crowded specialty in the entire posting.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>Developers don't search "best project management API." They search "how to verify webhook signature" and land on docs. Docs pages outnumber marketing pages massively, earn organic links from Stack Overflow and GitHub, and convert because the searcher is already implementing.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>SaaS companies run two websites in one: a small marketing site everyone fights over, and a huge instruction manual (the documentation) that nobody optimizes. It's like a local business polishing its homepage while three hundred service pages sit ignored, except here the ignored pages are 80% of the site and the people reading them are minutes away from becoming customers. Treating the manual as a search channel is the least crowded specialty in the entire posting.</span></div>
 
   <figure>
     <svg viewBox="0 0 840 230" width="100%" role="img" aria-label="Docs versus marketing page share at a typical SaaS company">
@@ -557,6 +564,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">GEO and AEO: getting cited by machines</h2>
   <p class="lede">Getting quoted and recommended by AI Overviews, ChatGPT, Claude, and Perplexity. Your playbook work gives you a head start. This is the technical layer under it.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>The posting lists AEO and GEO by name. When a company writes those acronyms into a $300K job spec, the market has priced the skill. Most SEOs still can't define it. That window is maybe 18 months wide.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>When ChatGPT, Claude, Perplexity, or Google's AI Overviews answer a question, they pick a few paragraphs from across the web to quote. AEO and GEO are two names for the same craft: being the paragraph that gets picked. Two rules drive everything. First, you must be findable in normal search, because the AI shops from the same shelves. Second, every section of your page must work as a standalone quote: heading phrased like the question, answer in the first sentence.</span></div>
 
   <h3 class="sec">How retrieval actually works</h3>
   <figure>
@@ -613,6 +621,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">SEO experimentation: proof over promises</h2>
   <p class="lede">Proving changes cause results instead of asserting it. This is what separates "trust me" SEO from the version that survives a room full of engineers.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>"This will help rankings" loses to a feature request every time. "We tested on 200 pages and saw a 14% click lift at 95% confidence" wins engineering resources. Experimentation is how SEO buys priority.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>This module is about proving your change caused the improvement, instead of hoping. You cannot show Google two versions of the same page (that's cloaking), so instead you take 400 similar pages, change 200, leave 200 alone, and watch whether the changed group pulls ahead. The untouched group is your alibi: if traffic rose everywhere because of the season, it rose there too, and comparing the groups subtracts that noise automatically.</span></div>
 
   <h3 class="sec">Why SEO tests are different</h3>
   <p>You can't show Google two versions of one page: that's cloaking. So SEO tests split at the <strong>page group level</strong>. Take 400 similar pages, randomly assign 200 to treatment (new title format, added schema) and 200 to control, and compare each group's trend against its own baseline. The method is difference in differences: did treatment diverge from control after the change?</p>
@@ -672,6 +681,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">Observability: know before rankings drop</h2>
   <p class="lede">Infrastructure that notices problems in hours instead of months. Dashboards for state, alerts for change.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>A deploy strips canonicals. Staging noindex ships to production. The sitemap 500s. Caught in week one these are incidents. Caught in month two via a traffic report they're disasters. Postings say "automated alerting" because companies have been burned.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>Smoke detectors for your website. Small scripts check your most dangerous files every day (robots.txt, the sitemap, the homepage code) and message you the moment one changes. The whole module rests on one distinction: a dashboard is a gauge you have to remember to look at; an alert taps you on the shoulder. Catastrophes need the shoulder tap, because nobody checks a gauge at 3am.</span></div>
 
   <h3 class="sec">The cheap monitoring stack</h3>
   <figure>
@@ -727,6 +737,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">International SEO and hreflang</h2>
   <p class="lede">Serving the right language version to the right searchers. Know the failure modes cold; hands on depth can wait until a client needs it.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>AI companies are expanding internationally right now, so this playbook gets built from scratch at each one. It's in the posting because nobody there has done it yet.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>hreflang is a label on each page telling Google "this is the Spanish-for-Mexico version of that English page." One rule generates nearly every failure in the wild: the labels must point both ways. The English page points to the Spanish one AND the Spanish page points back, or Google ignores both. The rest of the module is where the labels live and two habits (forced redirects by location, raw machine translation) that quietly break international sites.</span></div>
 
   <h3 class="sec">The rule that generates all the failures</h3>
   <figure>
@@ -782,6 +793,7 @@ button:focus-visible,.opt:focus-visible{outline:2px solid var(--cyan);outline-of
   <h2 class="big">The operator layer</h2>
   <p class="lede">The difference between an SEO who knows things and a Lead who ships things through other people's teams. You already run this playbook across three businesses. This is the translation.</p>
   <div class="payline"><span class="tag">Why it pays</span><span>Every SEO recommendation competes with product features for engineering time. The Lead who frames work in tickets, data, and business metrics gets resourced. The one who says "Google likes it" gets ignored.</span></div>
+  <div class="payline plain"><span class="tag">Plain English</span><span>You can be right about everything and still lose, because every SEO fix competes with product features for the same engineers. This module is the politics: write requests as tickets with clear finish lines, explain them as mechanisms ("30% of Google's visits are wasted on redirects") instead of folklore ("Google likes it"), and report results as money, not rankings. After 15 years of running your own businesses, this is the one module where you're translating skills you already have rather than learning new ones.</span></div>
 
   <h3 class="sec">The ICE roadmap</h3>
   <table>
